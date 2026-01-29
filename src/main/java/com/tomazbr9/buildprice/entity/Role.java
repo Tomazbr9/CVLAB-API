@@ -20,6 +20,10 @@ public class Role implements Serializable {
     @Column(nullable = false, unique = true)
     private RoleName name;
 
+    public Role(){
+
+    }
+
     public Role(UUID id, RoleName name){
         this.id = id;
         this.name = name;

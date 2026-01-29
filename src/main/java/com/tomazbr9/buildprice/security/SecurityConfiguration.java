@@ -23,8 +23,8 @@ public class SecurityConfiguration {
 
     // Endpoints que não exigem autenticação
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/auth/register",
-            "/auth/login"
+            "/api/v1/auth/register",
+            "/api/v1/auth/login"
     };
 
     // Endpoints que exigem perfil de Usuário
@@ -34,7 +34,7 @@ public class SecurityConfiguration {
 
     // Endpoints que exigem perfil de ADMIN
     public static final String[] ENDPOINTS_ADMIN = {
-            "users/admin/me"
+            "/api/v1/admin/sinapi"
     };
 
     @Bean
