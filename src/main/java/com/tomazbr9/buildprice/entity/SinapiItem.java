@@ -2,12 +2,15 @@ package com.tomazbr9.buildprice.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tb_sinapi_item")
-public class SinapiItem {
+public class SinapiItem implements Serializable {
+
+    private static final long seriaVersionUID = 1L;
 
     @Id
     @GeneratedValue
