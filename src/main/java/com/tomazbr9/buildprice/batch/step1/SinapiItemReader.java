@@ -1,4 +1,4 @@
-package com.tomazbr9.buildprice.batch;
+package com.tomazbr9.buildprice.batch.step1;
 
 import com.github.pjfanning.xlsx.StreamingReader;
 import com.tomazbr9.buildprice.dto.sinapi.SinapiItemDTO;
@@ -68,7 +68,7 @@ public class SinapiItemReader implements ItemReader<SinapiItemDTO>, ItemStream {
 
         Sheet sheet = workbook.getSheet(sheetName);
 
-        if(sheet == null) throw new RuntimeException("Sheet não encontrado");
+        if(sheet == null) throw new RuntimeException("Aba não encontrada");
 
         rowIterator = sheet.iterator();
 

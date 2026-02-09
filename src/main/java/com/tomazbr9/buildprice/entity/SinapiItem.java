@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -38,11 +39,14 @@ public class SinapiItem implements Serializable {
     @Column(name = "tax_relief", nullable = false)
     private String taxRelief;
 
+    @Column(name = "reference_month", nullable = false)
+    private LocalDate referenceMonth;
+
     public SinapiItem(){
 
     }
 
-    public SinapiItem(String codSinapi, String description, String classification, String unit, String uf, BigDecimal price, String taxRelief) {
+    public SinapiItem(String codSinapi, String description, String classification, String unit, String uf, BigDecimal price, String taxRelief, LocalDate referenceMonth) {
         this.codSinapi = codSinapi;
         this.description = description;
         this.classification = classification;
@@ -50,6 +54,7 @@ public class SinapiItem implements Serializable {
         this.uf = uf;
         this.price = price;
         this.taxRelief = taxRelief;
+        this.referenceMonth = referenceMonth;
     }
 
     public SinapiItem(UUID id, String codSinapi, String description, String classification, String unit, String uf, BigDecimal price, String taxRelief) {
@@ -109,6 +114,14 @@ public class SinapiItem implements Serializable {
 
     public void setUf(String uf){
         this.uf = uf;
+    }
+
+    public LocalDate getReferenceMonth() {
+        return referenceMonth;
+    }
+
+    public void setReferenceMonth(LocalDate referenceMonth) {
+        this.referenceMonth = referenceMonth;
     }
 
     public BigDecimal getPrice(){

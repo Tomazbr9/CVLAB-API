@@ -1,8 +1,6 @@
 package com.tomazbr9.buildprice.service;
 
 import com.tomazbr9.buildprice.dto.sinapi.ImportResponseDTO;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -12,10 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class AdminService {
@@ -26,16 +24,21 @@ public class AdminService {
     private JobLauncher jobLauncher;
     private Job sinapiJob;
 
+    List<String> TABS = Arrays.asList("ISD", "ICD", "ISE");
+
     public AdminService(JobLauncher jobLauncher, Job sinapiJob){
         this.jobLauncher = jobLauncher;
         this.sinapiJob = sinapiJob;
     }
 
-
-    public ImportResponseDTO importSinapi(MultipartFile file) {
+    public ImportResponseDTO importSinapi(MultipartFile file, String tab) {
 
         if(file.isEmpty()){
             throw new RuntimeException("Arquivo vazio");
+        }
+
+        if(!TABS.contains(tab)){
+            throw new RuntimeException("Aba não encontrada para importação.");
         }
 
         try {
@@ -45,7 +48,7 @@ public class AdminService {
 
             JobParameters params = new JobParametersBuilder()
                     .addString("tempFile", tempFile.toAbsolutePath().toString())
-                    .addString("sheetName", "ISD")
+                    .addString("sheetName", tab)
                     .addLong("timestamp", System.currentTimeMillis())
                     .toJobParameters();
 

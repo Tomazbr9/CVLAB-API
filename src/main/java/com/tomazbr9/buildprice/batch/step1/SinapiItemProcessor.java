@@ -1,4 +1,4 @@
-package com.tomazbr9.buildprice.batch;
+package com.tomazbr9.buildprice.batch.step1;
 
 import com.tomazbr9.buildprice.dto.sinapi.SinapiItemDTO;
 import com.tomazbr9.buildprice.entity.SinapiItem;
@@ -6,6 +6,7 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,8 @@ public class SinapiItemProcessor
                     item.unit(),
                     uf,
                     price,
-                    item.taxRelief()
+                    item.taxRelief(),
+                    LocalDate.now()
             ));
         });
 
