@@ -1,10 +1,9 @@
 package com.tomazbr9.buildprice.service;
 
+import com.tomazbr9.buildprice.dto.sinapi.BatchStatusDTO;
 import com.tomazbr9.buildprice.dto.sinapi.ImportResponseDTO;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.*;
+import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,14 +20,16 @@ public class AdminService {
     @Value("${spring.sinapi.upload-dir}")
     private String uploadDir;
 
-    private JobLauncher jobLauncher;
-    private Job sinapiJob;
+    private final JobLauncher jobLauncher;
+    private final Job sinapiJob;
+    private final JobExplorer jobExplorer;
 
     List<String> TABS = Arrays.asList("ISD", "ICD", "ISE");
 
-    public AdminService(JobLauncher jobLauncher, Job sinapiJob){
+    public AdminService(JobLauncher jobLauncher, Job sinapiJob, JobExplorer jobExplorer){
         this.jobLauncher = jobLauncher;
         this.sinapiJob = sinapiJob;
+        this.jobExplorer = jobExplorer;
     }
 
     public ImportResponseDTO importSinapi(MultipartFile file, String tab) {
@@ -60,5 +61,28 @@ public class AdminService {
         } catch (Exception e){
             throw new RuntimeException("Erro ao executar job SINAPI", e);
         }
+    }
+
+    public BatchStatusDTO getImportProcessStatus(Long jobId){
+        JobExecution jobExecution = jobExplorer.getJobExecution(jobId);
+
+        if(jobExecution == null){
+            throw new RuntimeException("JobExecution não encontrado");
+        }
+
+        StepExecution step = jobExecution
+                .getStepExecutions()
+                .stream()
+                .filter(stepExecution -> stepExecution.getStepName().equals("step1"))
+                .findFirst()
+                .orElse(null);
+
+        return new BatchStatusDTO(
+                step != null ? step.getStatus().toString() : null,
+                step != null ? step.getReadCount() : 0,
+                step != null ? step.getWriteCount() : 0,
+                step != null ? step.getCommitCount() : 0,
+                step != null ? step.getExitStatus().getExitCode() : null
+        );
     }
 }
