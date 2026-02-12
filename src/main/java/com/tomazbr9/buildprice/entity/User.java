@@ -49,6 +49,10 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public String getEmail() {
         return email;
     }

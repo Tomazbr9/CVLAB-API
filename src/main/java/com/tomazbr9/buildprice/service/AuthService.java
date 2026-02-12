@@ -6,6 +6,7 @@ import com.tomazbr9.buildprice.dto.user.UserRequestDTO;
 import com.tomazbr9.buildprice.entity.Role;
 import com.tomazbr9.buildprice.entity.User;
 import com.tomazbr9.buildprice.enums.RoleName;
+import com.tomazbr9.buildprice.exception.RoleNotFoundException;
 import com.tomazbr9.buildprice.repository.RoleRepository;
 import com.tomazbr9.buildprice.repository.UserRepository;
 import com.tomazbr9.buildprice.security.SecurityConfiguration;
@@ -40,7 +41,7 @@ public class AuthService {
 
     public void registerUser(UserRequestDTO request){
 
-        Role roleDefault = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RuntimeException("Role não encontrado"));
+        Role roleDefault = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RoleNotFoundException("Papel de usuário não encontrado"));
 
         User user = new User(request.email(), securityConfiguration.passwordEncoder().encode(request.password()), Set.of(roleDefault));
 

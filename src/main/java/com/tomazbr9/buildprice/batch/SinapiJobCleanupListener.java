@@ -1,5 +1,6 @@
 package com.tomazbr9.buildprice.batch;
 
+import com.tomazbr9.buildprice.exception.FailedRemovingTempFileException;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.stereotype.Component;
