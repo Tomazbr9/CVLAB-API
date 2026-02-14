@@ -1,6 +1,7 @@
 package com.tomazbr9.buildprice.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -16,6 +17,13 @@ public class User implements Serializable {
     @GeneratedValue
     @Column(nullable = false, updatable = false)
     private UUID id;
+
+    @Column(name = "first_name", nullable = false)
+    @Size(min = 3, max = 50)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -35,7 +43,10 @@ public class User implements Serializable {
 
     }
 
-    public User(String email, String password, Set<Role> roles){
+    public User(UUID id, String firstName, String lastName, String email, String password, Set<Role> roles){
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -43,6 +54,22 @@ public class User implements Serializable {
 
     public UUID getId() {
         return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setId(UUID id) {

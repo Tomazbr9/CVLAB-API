@@ -57,7 +57,7 @@ class AuthServiceTest {
         Role role = new Role();
         role.setName(RoleName.ROLE_USER);
 
-        UserRequestDTO request = new UserRequestDTO("teste@email.com", "123456");
+        UserRequestDTO request = new UserRequestDTO("test", "test", "teste@email.com", "123456");
 
         when(roleRepository.findByName(RoleName.ROLE_USER))
                 .thenReturn(Optional.of(role));
@@ -73,7 +73,7 @@ class AuthServiceTest {
     @Test
     void shouldThrowExceptionWhenRoleNotFound() {
 
-        UserRequestDTO request = new UserRequestDTO("teste@email.com", "123456");
+        UserRequestDTO request = new UserRequestDTO("test", "test","teste@email.com", "123456");
 
         when(roleRepository.findByName(RoleName.ROLE_USER))
                 .thenReturn(Optional.empty());

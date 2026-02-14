@@ -20,6 +20,9 @@ public class TestUserFactory {
                 .orElseGet(() -> roleRepository.save(new Role(null, RoleName.ROLE_USER)));
 
         User user = new User(
+                null,
+                "test",
+                "test",
                 "user@email.com",
                 passwordEncoder.encode("123456"),
                 Set.of(role)
@@ -40,6 +43,9 @@ public class TestUserFactory {
                 .orElseGet(() -> roleRepository.save(new Role(null, RoleName.ROLE_USER)));
 
         User user = new User(
+                null,
+                "test",
+                "test",
                 email,
                 passwordEncoder.encode(password),
                 Set.of(role)

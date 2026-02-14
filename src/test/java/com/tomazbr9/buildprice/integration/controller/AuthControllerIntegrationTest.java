@@ -56,7 +56,7 @@ class AuthControllerIntegrationTest extends AbstractIntegrationTest {
     @DisplayName("Should register user successfully")
     void shouldRegisterUser() throws Exception {
 
-        UserRequestDTO request = new UserRequestDTO("newuser@email.com", "123456");
+        UserRequestDTO request = new UserRequestDTO("test", "test", "newuser@email.com", "123456");
 
         mockMvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,10 +69,10 @@ class AuthControllerIntegrationTest extends AbstractIntegrationTest {
     void shouldReturnErrorWhenEmailAlreadyExists() throws Exception {
 
         // cria usuário existente
-        userRepository.save(new User("dup@email.com", "123456",
+        userRepository.save(new User(null, "test", "test", "dup@email.com", "123456",
                 Set.of(roleRepository.findByName(RoleName.ROLE_USER).orElseThrow())));
 
-        UserRequestDTO request = new UserRequestDTO("dup@email.com", "123456");
+        UserRequestDTO request = new UserRequestDTO("test", "test", "dup@email.com", "123456");
 
         mockMvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +87,10 @@ class AuthControllerIntegrationTest extends AbstractIntegrationTest {
         var encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
         var encoded = encoder.encode("123456");
 
-        userRepository.save(new com.tomazbr9.buildprice.entity.User(
+        userRepository.save(new User(
+                null,
+                "test",
+                "test",
                 "login@email.com",
                 encoded,
                 Set.of(roleRepository.findByName(RoleName.ROLE_USER).orElseThrow())

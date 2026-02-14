@@ -115,7 +115,7 @@ public class AdminService {
 
         return users.stream()
                 .filter(user -> user.getRoles().contains(role))
-                .map(user -> new UserResponseDTO(user.getEmail()))
+                .map(user -> new UserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail()))
                 .toList();
 
     }

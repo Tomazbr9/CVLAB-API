@@ -22,7 +22,7 @@ public class UserService {
     public UserResponseDTO getUser(String username){
 
         User user = userRepository.findByEmail(username).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
-        return new UserResponseDTO(user.getEmail());
+        return new UserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail());
     }
 
     public UserResponseDTO putUser(UserPatchDTO request, String email){
@@ -39,7 +39,7 @@ public class UserService {
 
         User userUpdate = userRepository.save(user);
 
-        return new UserResponseDTO(userUpdate.getEmail());
+        return new UserResponseDTO(userUpdate.getFirstName(), userUpdate.getLastName(), userUpdate.getEmail());
     }
 
     public void deleteUser(String email){

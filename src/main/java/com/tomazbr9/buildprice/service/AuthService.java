@@ -48,7 +48,7 @@ public class AuthService {
             throw new EmailAlreadyExistsException("Email ja existe.");
         }
 
-        User user = new User(request.email(), securityConfiguration.passwordEncoder().encode(request.password()), Set.of(roleDefault));
+        User user = new User(null, request.firstName(), request.lastName(), request.email(), securityConfiguration.passwordEncoder().encode(request.password()), Set.of(roleDefault));
 
         userRepository.save(user);
     }
