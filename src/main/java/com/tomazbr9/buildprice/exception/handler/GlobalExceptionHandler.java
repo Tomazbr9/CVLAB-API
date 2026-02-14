@@ -77,6 +77,11 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(exception.getMessage(), request.getRequestURI(), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(InvalidTerritorialScopeException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInvalidTerritorialScopeException(InvalidTerritorialScopeException exception, HttpServletRequest request){
+        return buildErrorResponse(exception.getMessage(), request.getRequestURI(), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception exception, HttpServletRequest request){
         return buildErrorResponse(exception.getMessage(), request.getRequestURI(), HttpStatus.INTERNAL_SERVER_ERROR);

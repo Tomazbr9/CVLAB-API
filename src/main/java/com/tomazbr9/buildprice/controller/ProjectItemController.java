@@ -2,6 +2,7 @@ package com.tomazbr9.buildprice.controller;
 
 import com.tomazbr9.buildprice.dto.project_item.ItemRequestDTO;
 import com.tomazbr9.buildprice.dto.project_item.ItemResponseDTO;
+import com.tomazbr9.buildprice.dto.project_item.ItemUpdateDTO;
 import com.tomazbr9.buildprice.security.model.UserDetailsImpl;
 import com.tomazbr9.buildprice.service.ProjectItemService;
 import jakarta.validation.Valid;
@@ -28,5 +29,14 @@ public class ProjectItemController {
         ItemResponseDTO response = service.addItem(sinapiItemId, request, userDetails.getId());
 
         return  ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PatchMapping("/{itemId}/update/item")
+    public ResponseEntity<ItemResponseDTO> updateItem(@PathVariable UUID itemId, @RequestBody ItemUpdateDTO request){
+
+        ItemResponseDTO response = service.updateItem(itemId, request);
+
+        return ResponseEntity.accepted().body(response);
+
     }
 }
