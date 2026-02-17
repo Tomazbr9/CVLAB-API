@@ -1,1 +1,0 @@
-ALTER TABLE tb_sinapi_item ADD COLUMN reference_month DATE NOT NULL

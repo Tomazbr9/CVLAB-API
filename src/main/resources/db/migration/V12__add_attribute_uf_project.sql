@@ -1,1 +1,0 @@
-ALTER TABLE tb_projects ADD COLUMN uf VARCHAR(2);

@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/buildprice_db
-    username: buildprice_user
-    password: buildprice_pass
+    url: jdbc:postgresql://localhost:5432/cvlab-db
+    username: user
+    password: pass
 
   jpa:
     hibernate:
@@ -13,18 +13,6 @@ spring:
     enabled: true
     baseline-on-migrate: true
 
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
-
-  sinapi:
+  cvs:
     upload-dir: /tmp/sinapi
-
-  batch:
-    jdbc:
-      platform: postgresql
-      initialize-schema: always
-    job:
-      enabled: false
 

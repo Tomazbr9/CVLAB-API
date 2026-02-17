@@ -3,16 +3,16 @@ version: "3.9"
 services:
   postgres:
     image: postgres:16
-    container_name: buildprice-postgres
+    container_name: cvlab-postgres
     restart: unless-stopped
 
     environment:
-      POSTGRES_DB: buildprice_db
-      POSTGRES_USER: buildprice_user
-      POSTGRES_PASSWORD: buildprice_pass
+      POSTGRES_DB: cvlab-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
 
     ports:
-      - "5433:5432"
+      - "5432:5432"
 
     volumes:
       - "postgres_data:/var/lib/postgresql/data"
