@@ -1,6 +1,6 @@
-package com.tomazbr9.cvlab.entity;
+package com.tomazbr9.cvlab.modules.auth.entity;
 
-import com.tomazbr9.cvlab.enums.RoleName;
+import com.tomazbr9.cvlab.modules.auth.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,10 +1,10 @@
-package com.tomazbr9.cvlab.service;
+package com.tomazbr9.cvlab.modules.users.service;
 
-import com.tomazbr9.cvlab.dto.user.UserPatchDTO;
-import com.tomazbr9.cvlab.dto.user.UserResponseDTO;
-import com.tomazbr9.cvlab.entity.User;
-import com.tomazbr9.cvlab.exception.UserNotFoundException;
-import com.tomazbr9.cvlab.repository.UserRepository;
+import com.tomazbr9.cvlab.modules.users.dto.UserPatchDTO;
+import com.tomazbr9.cvlab.modules.users.dto.UserResponseDTO;
+import com.tomazbr9.cvlab.modules.users.entity.User;
+import com.tomazbr9.cvlab.modules.users.exception.UserNotFoundException;
+import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

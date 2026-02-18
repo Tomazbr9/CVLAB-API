@@ -1,4 +1,4 @@
-package com.tomazbr9.cvlab.dto.user;
+package com.tomazbr9.cvlab.modules.users.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;

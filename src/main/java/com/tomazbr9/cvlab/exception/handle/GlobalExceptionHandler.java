@@ -1,9 +1,9 @@
 package com.tomazbr9.cvlab.exception.handle;
 
 import com.tomazbr9.cvlab.dto.exception.ErrorResponseDTO;
-import com.tomazbr9.cvlab.exception.EmailAlreadyExistsException;
-import com.tomazbr9.cvlab.exception.RoleNotFoundException;
-import com.tomazbr9.cvlab.exception.UserNotFoundException;
+import com.tomazbr9.cvlab.modules.auth.exception.EmailAlreadyExistsException;
+import com.tomazbr9.cvlab.modules.auth.exception.RoleNotFoundException;
+import com.tomazbr9.cvlab.modules.users.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

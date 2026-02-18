@@ -1,15 +1,15 @@
-package com.tomazbr9.cvlab.service;
+package com.tomazbr9.cvlab.modules.auth.service;
 
-import com.tomazbr9.cvlab.dto.auth.JwtTokenDTO;
-import com.tomazbr9.cvlab.dto.auth.LoginDTO;
-import com.tomazbr9.cvlab.dto.user.UserRequestDTO;
-import com.tomazbr9.cvlab.entity.Role;
-import com.tomazbr9.cvlab.entity.User;
-import com.tomazbr9.cvlab.enums.RoleName;
-import com.tomazbr9.cvlab.exception.EmailAlreadyExistsException;
-import com.tomazbr9.cvlab.exception.RoleNotFoundException;
-import com.tomazbr9.cvlab.repository.RoleRepository;
-import com.tomazbr9.cvlab.repository.UserRepository;
+import com.tomazbr9.cvlab.modules.auth.dto.JwtTokenDTO;
+import com.tomazbr9.cvlab.modules.auth.dto.LoginDTO;
+import com.tomazbr9.cvlab.modules.users.dto.UserRequestDTO;
+import com.tomazbr9.cvlab.modules.auth.entity.Role;
+import com.tomazbr9.cvlab.modules.users.entity.User;
+import com.tomazbr9.cvlab.modules.auth.enums.RoleName;
+import com.tomazbr9.cvlab.modules.auth.exception.EmailAlreadyExistsException;
+import com.tomazbr9.cvlab.modules.auth.exception.RoleNotFoundException;
+import com.tomazbr9.cvlab.modules.auth.repository.RoleRepository;
+import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
 import com.tomazbr9.cvlab.security.SecurityConfiguration;
 import com.tomazbr9.cvlab.security.jwt.JwtTokenService;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;

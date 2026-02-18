@@ -1,9 +1,9 @@
-package com.tomazbr9.cvlab.controller;
+package com.tomazbr9.cvlab.modules.users.controller;
 
-import com.tomazbr9.cvlab.dto.user.UserPatchDTO;
-import com.tomazbr9.cvlab.dto.user.UserResponseDTO;
+import com.tomazbr9.cvlab.modules.users.dto.UserPatchDTO;
+import com.tomazbr9.cvlab.modules.users.dto.UserResponseDTO;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;
-import com.tomazbr9.cvlab.service.UserService;
+import com.tomazbr9.cvlab.modules.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

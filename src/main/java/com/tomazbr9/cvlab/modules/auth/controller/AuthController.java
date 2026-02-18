@@ -1,9 +1,9 @@
-package com.tomazbr9.cvlab.controller;
+package com.tomazbr9.cvlab.modules.auth.controller;
 
-import com.tomazbr9.cvlab.dto.auth.JwtTokenDTO;
-import com.tomazbr9.cvlab.dto.auth.LoginDTO;
-import com.tomazbr9.cvlab.dto.user.UserRequestDTO;
-import com.tomazbr9.cvlab.service.AuthService;
+import com.tomazbr9.cvlab.modules.auth.dto.JwtTokenDTO;
+import com.tomazbr9.cvlab.modules.auth.dto.LoginDTO;
+import com.tomazbr9.cvlab.modules.users.dto.UserRequestDTO;
+import com.tomazbr9.cvlab.modules.auth.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

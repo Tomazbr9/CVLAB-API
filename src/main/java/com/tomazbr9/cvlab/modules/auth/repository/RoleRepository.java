@@ -1,7 +1,7 @@
-package com.tomazbr9.cvlab.repository;
+package com.tomazbr9.cvlab.modules.auth.repository;
 
-import com.tomazbr9.cvlab.enums.RoleName;
-import com.tomazbr9.cvlab.entity.Role;
+import com.tomazbr9.cvlab.modules.auth.enums.RoleName;
+import com.tomazbr9.cvlab.modules.auth.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.tomazbr9.cvlab.enums;
+package com.tomazbr9.cvlab.modules.auth.enums;
 
 public enum RoleName {
     ROLE_ADMIN,

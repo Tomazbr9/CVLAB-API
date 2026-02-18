@@ -1,7 +1,7 @@
 package com.tomazbr9.cvlab.security.service;
 
-import com.tomazbr9.cvlab.entity.User;
-import com.tomazbr9.cvlab.repository.UserRepository;
+import com.tomazbr9.cvlab.modules.users.entity.User;
+import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

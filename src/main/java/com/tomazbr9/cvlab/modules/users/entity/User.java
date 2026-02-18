@@ -1,5 +1,6 @@
-package com.tomazbr9.cvlab.entity;
+package com.tomazbr9.cvlab.modules.users.entity;
 
+import com.tomazbr9.cvlab.modules.auth.entity.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

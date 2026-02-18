@@ -1,8 +1,8 @@
 package com.tomazbr9.cvlab.security.filter;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.tomazbr9.cvlab.entity.User;
-import com.tomazbr9.cvlab.repository.UserRepository;
+import com.tomazbr9.cvlab.modules.users.entity.User;
+import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
 import com.tomazbr9.cvlab.security.SecurityConfiguration;
 import com.tomazbr9.cvlab.security.jwt.JwtTokenService;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;

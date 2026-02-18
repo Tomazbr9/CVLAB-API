@@ -1,6 +1,6 @@
 package com.tomazbr9.cvlab.security.model;
 
-import com.tomazbr9.cvlab.entity.Role;
+import com.tomazbr9.cvlab.modules.auth.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
