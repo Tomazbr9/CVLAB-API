@@ -1,6 +1,6 @@
-package com.tomazbr9.cvlab.modules.profile.repository;
+package com.tomazbr9.cvlab.modules.profiles.repository;
 
-import com.tomazbr9.cvlab.modules.profile.entity.Profile;
+import com.tomazbr9.cvlab.modules.profiles.entity.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
