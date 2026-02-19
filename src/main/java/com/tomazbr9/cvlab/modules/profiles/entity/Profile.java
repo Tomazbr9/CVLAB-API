@@ -21,16 +21,15 @@ public class Profile {
     @Column(nullable = false, updatable = false)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String phone;
 
-    @Column(name = "professional_summary", nullable = false)
+    @Column(name = "professional_summary", nullable = false, columnDefinition = "TEXT")
     private String professionalSummary;
 
     @OneToOne

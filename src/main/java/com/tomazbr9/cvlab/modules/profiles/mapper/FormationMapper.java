@@ -11,5 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface FormationMapper {
 
+    Formation toEntity(FormationDTO formationDTO);
+
     List<Formation> toEntityList(List<FormationDTO> formationsDTO);
 }

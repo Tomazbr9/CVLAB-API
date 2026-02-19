@@ -1,17 +1,9 @@
 package com.tomazbr9.cvlab.modules.profiles.service;
 
 import com.tomazbr9.cvlab.modules.profiles.dto.*;
-import com.tomazbr9.cvlab.modules.profiles.entity.Experience;
-import com.tomazbr9.cvlab.modules.profiles.entity.Formation;
-import com.tomazbr9.cvlab.modules.profiles.entity.Profile;
-import com.tomazbr9.cvlab.modules.profiles.entity.Project;
-import com.tomazbr9.cvlab.modules.profiles.mapper.ExperienceMapper;
-import com.tomazbr9.cvlab.modules.profiles.mapper.FormationMapper;
-import com.tomazbr9.cvlab.modules.profiles.mapper.ProjectMapper;
-import com.tomazbr9.cvlab.modules.profiles.repository.ExperienceRepository;
-import com.tomazbr9.cvlab.modules.profiles.repository.FormationRepository;
-import com.tomazbr9.cvlab.modules.profiles.repository.ProfileRepository;
-import com.tomazbr9.cvlab.modules.profiles.repository.ProjectRepository;
+import com.tomazbr9.cvlab.modules.profiles.entity.*;
+import com.tomazbr9.cvlab.modules.profiles.mapper.*;
+import com.tomazbr9.cvlab.modules.profiles.repository.*;
 import com.tomazbr9.cvlab.modules.users.entity.User;
 import com.tomazbr9.cvlab.modules.users.exception.UserNotFoundException;
 import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
@@ -30,15 +22,23 @@ public class ProfileService {
     @Autowired FormationRepository formationRepository;
     @Autowired ExperienceRepository experienceRepository;
     @Autowired ProjectRepository projectRepository;
+    @Autowired CourseRepository courseRepository;
+    @Autowired LinkRepository linkRepository;
+    @Autowired SkillRepository skillRepository;
+
+    @Autowired ProfileMapper profileMapper;
     @Autowired ProjectMapper projectMapper;
     @Autowired ExperienceMapper experienceMapper;
     @Autowired FormationMapper formationMapper;
+    @Autowired CourseMapper courseMapper;
+    @Autowired LinkMapper linkMapper;
+    @Autowired SkillMapper skillMapper;
 
 
     @Transactional
     public ProfileResponseDTO createProfile(ProfileRequestDTO request, UUID userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"))
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
         Profile profile = Profile.builder()
                 .fullName(request.fullName())
@@ -53,7 +53,11 @@ public class ProfileService {
         saveExperiences(request.experiences(), savedProfile);
         saveFormations(request.formations(), savedProfile);
         saveProjects(request.projects(), savedProfile);
+        saveCourses(request.courses(), savedProfile);
+        saveLinks(request.links(), savedProfile);
+        saveSkills(request.skills(), savedProfile);
 
+        return profileMapper.toDTO(savedProfile);
 
     }
 
@@ -73,5 +77,23 @@ public class ProfileService {
         projects.forEach(project -> project.setProfile(profile));
         projectRepository.saveAll(projects);
      }
+
+    private void saveCourses(List<CourseDTO> coursesDTO, Profile profile){
+        List<Course> courses = courseMapper.toEntityList(coursesDTO);
+        courses.forEach(course -> course.setProfile(profile));
+        courseRepository.saveAll(courses);
+    }
+
+    private void saveLinks(List<LinkDTO> linksDTO, Profile profile){
+        List<Link> links = linkMapper.toEntityList(linksDTO);
+        links.forEach(link -> link.setProfile(profile));
+        linkRepository.saveAll(links);
+    }
+
+    private void saveSkills(List<SkillDTO> skillsDTO, Profile profile){
+        List<Skill> skills = skillMapper.toEntityList(skillsDTO);
+        skills.forEach(skill -> skill.setProfile(profile));
+        skillRepository.saveAll(skills);
+    }
 
 }
