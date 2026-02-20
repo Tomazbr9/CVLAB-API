@@ -1,6 +1,7 @@
 package com.tomazbr9.cvlab.modules.users.entity;
 
 import com.tomazbr9.cvlab.modules.auth.entity.Role;
+import com.tomazbr9.cvlab.modules.profiles.entity.Profile;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -47,5 +48,8 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+
+//    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+//    private Profile profile;
 
 }

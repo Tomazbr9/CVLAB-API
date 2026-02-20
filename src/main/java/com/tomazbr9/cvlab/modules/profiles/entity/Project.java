@@ -23,7 +23,7 @@ public class Project {
     @Column(name = "project_name", nullable = false)
     private String projectName;
 
-    @Column(name = "technologies_used", nullable = false)
+    @Column(name = "technologies_used")
     private String technologiesUsed;
 
     @Column(name = "project_location")
@@ -38,6 +38,7 @@ public class Project {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
     private String link;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

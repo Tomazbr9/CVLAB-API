@@ -1,0 +1,2 @@
+ALTER TABLE tb_skills
+ALTER COLUMN level TYPE VARCHAR(20);

@@ -4,6 +4,7 @@ import com.tomazbr9.cvlab.modules.auth.dto.JwtTokenDTO;
 import com.tomazbr9.cvlab.modules.auth.dto.LoginDTO;
 import com.tomazbr9.cvlab.modules.users.dto.UserRequestDTO;
 import com.tomazbr9.cvlab.modules.auth.entity.Role;
+import com.tomazbr9.cvlab.modules.users.dto.UserResponseDTO;
 import com.tomazbr9.cvlab.modules.users.entity.User;
 import com.tomazbr9.cvlab.modules.auth.enums.RoleName;
 import com.tomazbr9.cvlab.modules.auth.exception.EmailAlreadyExistsException;
@@ -30,7 +31,7 @@ public class AuthService {
     @Autowired RoleRepository roleRepository;
     @Autowired SecurityConfiguration securityConfiguration;
 
-    public void registerUser(UserRequestDTO request){
+    public UserResponseDTO registerUser(UserRequestDTO request){
 
         Role roleDefault = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RoleNotFoundException("Papel de usuário não encontrado"));
 
@@ -40,7 +41,9 @@ public class AuthService {
 
         User user = new User(null, request.firstName(), request.lastName(), request.email(), securityConfiguration.passwordEncoder().encode(request.password()), Set.of(roleDefault));
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        return new UserResponseDTO(savedUser.getFirstName(), savedUser.getLastName(), savedUser.getEmail());
     }
 
     public JwtTokenDTO authenticateUser(LoginDTO request){

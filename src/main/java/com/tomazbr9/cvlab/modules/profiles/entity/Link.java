@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_profiles")
+@Table(name = "tb_links")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

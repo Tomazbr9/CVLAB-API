@@ -4,6 +4,7 @@ import com.tomazbr9.cvlab.modules.auth.dto.JwtTokenDTO;
 import com.tomazbr9.cvlab.modules.auth.dto.LoginDTO;
 import com.tomazbr9.cvlab.modules.users.dto.UserRequestDTO;
 import com.tomazbr9.cvlab.modules.auth.service.AuthService;
+import com.tomazbr9.cvlab.modules.users.dto.UserResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,14 +19,14 @@ public class AuthController {
     private AuthService service;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody @Valid UserRequestDTO request){
-        service.registerUser(request);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody @Valid UserRequestDTO request){
+        UserResponseDTO response = service.registerUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<JwtTokenDTO> authenticateUser(@RequestBody @Valid LoginDTO request){
         JwtTokenDTO token = service.authenticateUser(request);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 }

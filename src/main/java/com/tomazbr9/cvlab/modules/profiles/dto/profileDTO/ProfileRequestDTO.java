@@ -1,4 +1,7 @@
-package com.tomazbr9.cvlab.modules.profiles.dto;
+package com.tomazbr9.cvlab.modules.profiles.dto.profileDTO;
+
+import com.tomazbr9.cvlab.modules.profiles.dto.*;
+import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceDTO;
 
 import java.util.List;
 

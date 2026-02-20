@@ -36,24 +36,22 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private List<Experience> experiences;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private List<Formation> formations;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private List<Skill> skills;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private List<Project> projects;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private List<Link> links;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private List<Course> courses;
-
-
 
 }

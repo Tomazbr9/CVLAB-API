@@ -1,6 +1,10 @@
 package com.tomazbr9.cvlab.modules.profiles.service;
 
 import com.tomazbr9.cvlab.modules.profiles.dto.*;
+import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.profileDTO.ProfileRequestDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.profileDTO.ProfileResponseDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.profileDTO.ProfileUpdateDTO;
 import com.tomazbr9.cvlab.modules.profiles.entity.*;
 import com.tomazbr9.cvlab.modules.profiles.mapper.*;
 import com.tomazbr9.cvlab.modules.profiles.repository.*;
@@ -34,6 +38,10 @@ public class ProfileService {
     @Autowired LinkMapper linkMapper;
     @Autowired SkillMapper skillMapper;
 
+    public ProfileResponseDTO getProfile(UUID profileId, UUID userId){
+        Profile profile = profileRepository.findByIdAndUser_id(profileId, userId).orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
+        return profileMapper.toDTO(profile);
+    }
 
     @Transactional
     public ProfileResponseDTO createProfile(ProfileRequestDTO request, UUID userId) {
@@ -59,6 +67,18 @@ public class ProfileService {
 
         return profileMapper.toDTO(savedProfile);
 
+    }
+
+    @Transactional
+    public ProfileResponseDTO updateProfile(UUID profileId, ProfileUpdateDTO request, UUID userId){
+
+        Profile profile = profileRepository.findByIdAndUser_id(profileId, userId).orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
+
+        profileMapper.updateEntityFromDTO(request, profile);
+
+        profileRepository.save(profile);
+
+        return profileMapper.toDTO(profile);
     }
 
     private void saveExperiences(List<ExperienceDTO> experiencesDTO, Profile profile){
@@ -95,5 +115,6 @@ public class ProfileService {
         skills.forEach(skill -> skill.setProfile(profile));
         skillRepository.saveAll(skills);
     }
+
 
 }

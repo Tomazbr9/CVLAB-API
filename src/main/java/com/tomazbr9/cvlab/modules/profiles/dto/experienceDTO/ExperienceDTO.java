@@ -1,4 +1,4 @@
-package com.tomazbr9.cvlab.modules.profiles.dto;
+package com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

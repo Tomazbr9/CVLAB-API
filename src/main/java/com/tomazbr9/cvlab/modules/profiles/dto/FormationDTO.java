@@ -15,7 +15,6 @@ public record FormationDTO(
         @NotBlank(message = "Nome da instituição é obrigatório")
         String institutionName,
 
-        @NotBlank(message = "Local do curso é obrigatório")
         String courseLocation,
 
         @NotNull(message = "Data de inicio é obrigatório")

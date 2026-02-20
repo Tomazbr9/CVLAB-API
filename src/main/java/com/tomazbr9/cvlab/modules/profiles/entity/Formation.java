@@ -27,7 +27,7 @@ public class Formation {
     @Column(name = "institution_name", nullable = false)
     private String institutionName;
 
-    @Column(name = "course_location", nullable = false)
+    @Column(name = "course_location")
     private String courseLocation;
 
     @Column(name = "start_date", nullable = false)
