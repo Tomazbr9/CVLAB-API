@@ -1,7 +1,6 @@
-package com.tomazbr9.cvlab.modules.profiles.dto;
+package com.tomazbr9.cvlab.modules.profiles.dto.formationDTO;
 
 import com.tomazbr9.cvlab.modules.profiles.enums.FormationStatus;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

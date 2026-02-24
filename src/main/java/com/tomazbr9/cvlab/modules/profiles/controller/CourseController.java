@@ -1,9 +1,13 @@
 package com.tomazbr9.cvlab.modules.profiles.controller;
 
 
+import com.tomazbr9.cvlab.modules.profiles.dto.courseDTO.CourseDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.courseDTO.CourseResponseDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.courseDTO.CourseUpdateDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceResponseDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceUpdateDTO;
+import com.tomazbr9.cvlab.modules.profiles.service.CourseService;
 import com.tomazbr9.cvlab.modules.profiles.service.ExperienceService;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,30 +19,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/profiles/{profileId}/experiences")
-public class ExperienceController {
+@RequestMapping("api/v1/profiles/{profileId}/courses")
+public class CourseController {
 
     @Autowired
-    ExperienceService service;
+    CourseService service;
 
     @PostMapping
-    public ResponseEntity<ExperienceResponseDTO> createExperience(
+    public ResponseEntity<CourseResponseDTO> createCourse(
             @PathVariable UUID profileId,
-            @RequestBody ExperienceDTO request,
+            @RequestBody CourseDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
-        ExperienceResponseDTO response = service.createExperience(profileId, request, userDetails.getId());
+        CourseResponseDTO response = service.createCourse(profileId, request, userDetails.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PatchMapping("/{experienceId}")
-    public ResponseEntity<ExperienceResponseDTO> updateExperience(
+    @PatchMapping("/{courseId}")
+    public ResponseEntity<CourseResponseDTO> updateCourse(
             @PathVariable UUID profileId,
             @PathVariable UUID experienceId,
-            @RequestBody ExperienceUpdateDTO request,
+            @RequestBody CourseUpdateDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
-        ExperienceResponseDTO response = service.updateExperience(profileId, experienceId, request, userDetails.getId());
+
+        CourseResponseDTO response = service.updateCourse(profileId, experienceId, request, userDetails.getId());
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 
     }

@@ -1,6 +1,5 @@
-package com.tomazbr9.cvlab.modules.profiles.dto;
+package com.tomazbr9.cvlab.modules.profiles.dto.courseDTO;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

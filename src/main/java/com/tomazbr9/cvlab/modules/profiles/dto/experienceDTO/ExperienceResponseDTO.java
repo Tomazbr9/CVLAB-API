@@ -1,8 +1,14 @@
 package com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO;
 
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-public record ExperienceUpdateDTO(
+import java.time.LocalDate;
+import java.util.UUID;
+
+public record ExperienceResponseDTO(
+
+        UUID id,
 
         String jobTitle,
 
@@ -15,4 +21,5 @@ public record ExperienceUpdateDTO(
         LocalDate endDate,
 
         String description
-) {}
+) {
+}

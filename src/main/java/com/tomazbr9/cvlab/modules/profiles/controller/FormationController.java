@@ -3,8 +3,10 @@ package com.tomazbr9.cvlab.modules.profiles.controller;
 
 import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceResponseDTO;
-import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceUpdateDTO;
-import com.tomazbr9.cvlab.modules.profiles.service.ExperienceService;
+import com.tomazbr9.cvlab.modules.profiles.dto.formationDTO.FormationDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.formationDTO.FormationResponseDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.formationDTO.FormationUpdateDTO;
+import com.tomazbr9.cvlab.modules.profiles.service.FormationService;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,30 +17,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/profiles/{profileId}/experiences")
-public class ExperienceController {
+@RequestMapping("api/v1/profiles/{profileId}/formations")
+public class FormationController {
 
     @Autowired
-    ExperienceService service;
+    FormationService service;
 
     @PostMapping
-    public ResponseEntity<ExperienceResponseDTO> createExperience(
+    public ResponseEntity<FormationResponseDTO> createFormation(
             @PathVariable UUID profileId,
-            @RequestBody ExperienceDTO request,
+            @RequestBody FormationDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
-        ExperienceResponseDTO response = service.createExperience(profileId, request, userDetails.getId());
+        FormationResponseDTO response = service.createFormation(profileId, request, userDetails.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PatchMapping("/{experienceId}")
-    public ResponseEntity<ExperienceResponseDTO> updateExperience(
+    @PatchMapping("/{formationId}")
+    public ResponseEntity<FormationResponseDTO> updateFormation(
             @PathVariable UUID profileId,
-            @PathVariable UUID experienceId,
-            @RequestBody ExperienceUpdateDTO request,
+            @PathVariable UUID formationId,
+            @RequestBody FormationUpdateDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
-        ExperienceResponseDTO response = service.updateExperience(profileId, experienceId, request, userDetails.getId());
+
+        FormationResponseDTO response = service.updateFormation(profileId, formationId, request, userDetails.getId());
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 
     }

@@ -1,7 +1,11 @@
 package com.tomazbr9.cvlab.modules.profiles.dto.profileDTO;
 
-import com.tomazbr9.cvlab.modules.profiles.dto.*;
+import com.tomazbr9.cvlab.modules.profiles.dto.courseDTO.CourseDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.formationDTO.FormationDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.linkDTO.LinkDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.projectDTO.ProjectDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.skillDTO.SkillDTO;
 
 import java.util.List;
 

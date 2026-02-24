@@ -1,10 +1,14 @@
 package com.tomazbr9.cvlab.modules.profiles.service;
 
-import com.tomazbr9.cvlab.modules.profiles.dto.*;
+import com.tomazbr9.cvlab.modules.profiles.dto.courseDTO.CourseDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.formationDTO.FormationDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.linkDTO.LinkDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.profileDTO.ProfileRequestDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.profileDTO.ProfileResponseDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.profileDTO.ProfileUpdateDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.projectDTO.ProjectDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.skillDTO.SkillDTO;
 import com.tomazbr9.cvlab.modules.profiles.entity.*;
 import com.tomazbr9.cvlab.modules.profiles.mapper.*;
 import com.tomazbr9.cvlab.modules.profiles.repository.*;

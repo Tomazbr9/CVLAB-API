@@ -1,4 +1,4 @@
-package com.tomazbr9.cvlab.modules.profiles.dto;
+package com.tomazbr9.cvlab.modules.profiles.dto.projectDTO;
 
 import jakarta.validation.constraints.NotBlank;
 

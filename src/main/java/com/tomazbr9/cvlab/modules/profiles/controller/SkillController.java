@@ -3,8 +3,12 @@ package com.tomazbr9.cvlab.modules.profiles.controller;
 
 import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceResponseDTO;
-import com.tomazbr9.cvlab.modules.profiles.dto.experienceDTO.ExperienceUpdateDTO;
-import com.tomazbr9.cvlab.modules.profiles.service.ExperienceService;
+import com.tomazbr9.cvlab.modules.profiles.dto.formationDTO.FormationResponseDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.skillDTO.SkillDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.skillDTO.SkillResponseDTO;
+import com.tomazbr9.cvlab.modules.profiles.dto.skillDTO.SkillUpdateDTO;
+import com.tomazbr9.cvlab.modules.profiles.service.FormationService;
+import com.tomazbr9.cvlab.modules.profiles.service.SkillService;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,30 +19,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/profiles/{profileId}/experiences")
-public class ExperienceController {
+@RequestMapping("api/v1/profiles/{profileId}/skills")
+public class SkillController {
 
     @Autowired
-    ExperienceService service;
+    SkillService service;
 
     @PostMapping
-    public ResponseEntity<ExperienceResponseDTO> createExperience(
+    public ResponseEntity<SkillResponseDTO> createSkill(
             @PathVariable UUID profileId,
-            @RequestBody ExperienceDTO request,
+            @RequestBody SkillDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
-        ExperienceResponseDTO response = service.createExperience(profileId, request, userDetails.getId());
+        SkillResponseDTO response = service.createSkill(profileId, request, userDetails.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PatchMapping("/{experienceId}")
-    public ResponseEntity<ExperienceResponseDTO> updateExperience(
+    @PatchMapping("/{skillId}")
+    public ResponseEntity<SkillResponseDTO> updateSkill(
             @PathVariable UUID profileId,
-            @PathVariable UUID experienceId,
-            @RequestBody ExperienceUpdateDTO request,
+            @PathVariable UUID skillId,
+            @RequestBody SkillUpdateDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
-        ExperienceResponseDTO response = service.updateExperience(profileId, experienceId, request, userDetails.getId());
+
+        SkillResponseDTO response = service.updateSkill(profileId, skillId, request, userDetails.getId());
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 
     }
