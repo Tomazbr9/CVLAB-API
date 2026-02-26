@@ -14,6 +14,7 @@ import com.tomazbr9.cvlab.modules.profiles.repository.CourseRepository;
 import com.tomazbr9.cvlab.modules.profiles.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -24,17 +25,19 @@ public class CourseService {
     @Autowired CourseMapper mapper;
     @Autowired ProfileRepository profileRepository;
 
+    @Transactional
     public CourseResponseDTO createCourse(UUID profileId, CourseDTO request, UUID userId){
 
         Profile profile = profileRepository.findByIdAndUser_id(profileId, userId).orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
         Course course = mapper.toEntity(request);
         course.setProfile(profile);
 
-        // Precisa salvar os objetos!
+        Course savedCourse = courseRepository.save(course);
 
-        return mapper.toDTO(course);
+        return mapper.toDTO(savedCourse);
     }
 
+    @Transactional
     public CourseResponseDTO updateCourse(UUID profileId, UUID courseId, CourseUpdateDTO request, UUID userId){
 
         Course course = courseRepository.findByIdAndProfileIdAndProfileUserId(courseId, profileId, userId).orElseThrow(() -> new RuntimeException("Acesso negado ou recurso não encontrado"));
@@ -43,5 +46,11 @@ public class CourseService {
         Course savedCourse = courseRepository.save(course);
         return mapper.toDTO(savedCourse);
 
+    }
+
+    @Transactional
+    public void deleteCourse(UUID profileId, UUID courseId, UUID userId){
+        Course course = courseRepository.findByIdAndProfileIdAndProfileUserId(courseId, profileId, userId).orElseThrow(() -> new RuntimeException("Acesso negado ou recurso não encontrado"));
+        courseRepository.delete(course);
     }
 }

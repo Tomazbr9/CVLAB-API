@@ -43,4 +43,15 @@ public class ExperienceController {
 
     }
 
+    @DeleteMapping("/{experienceId}")
+    public ResponseEntity<Void> deleteExperience(
+            @PathVariable UUID profileId,
+            @PathVariable UUID experienceId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        service.deleteExperience(profileId, experienceId, userDetails.getId());
+        return ResponseEntity.noContent().build();
+
+    }
+
 }

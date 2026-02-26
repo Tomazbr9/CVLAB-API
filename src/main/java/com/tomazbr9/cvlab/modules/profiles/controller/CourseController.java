@@ -38,14 +38,24 @@ public class CourseController {
     @PatchMapping("/{courseId}")
     public ResponseEntity<CourseResponseDTO> updateCourse(
             @PathVariable UUID profileId,
-            @PathVariable UUID experienceId,
+            @PathVariable UUID courseId,
             @RequestBody CourseUpdateDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
 
-        CourseResponseDTO response = service.updateCourse(profileId, experienceId, request, userDetails.getId());
+        CourseResponseDTO response = service.updateCourse(profileId, courseId, request, userDetails.getId());
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 
+    }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Void> deleteCourse(
+            @PathVariable UUID profileId,
+            @RequestBody UUID courseId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        service.deleteCourse(profileId, courseId, userDetails.getId());
+        return ResponseEntity.noContent().build();
     }
 
 }

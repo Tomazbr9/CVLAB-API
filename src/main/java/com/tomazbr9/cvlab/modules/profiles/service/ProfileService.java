@@ -15,9 +15,9 @@ import com.tomazbr9.cvlab.modules.profiles.repository.*;
 import com.tomazbr9.cvlab.modules.users.entity.User;
 import com.tomazbr9.cvlab.modules.users.exception.UserNotFoundException;
 import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,6 +42,7 @@ public class ProfileService {
     @Autowired LinkMapper linkMapper;
     @Autowired SkillMapper skillMapper;
 
+    @Transactional(readOnly = true)
     public ProfileResponseDTO getProfile(UUID profileId, UUID userId){
         Profile profile = profileRepository.findByIdAndUser_id(profileId, userId).orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
         return profileMapper.toDTO(profile);

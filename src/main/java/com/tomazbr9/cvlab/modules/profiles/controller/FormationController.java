@@ -46,4 +46,15 @@ public class FormationController {
 
     }
 
+    @DeleteMapping("/{formationId}")
+    public ResponseEntity<Void> deleteFormation(
+            @PathVariable UUID profileId,
+            @PathVariable UUID formationId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        service.deleteFormation(profileId, formationId, userDetails.getId());
+        return ResponseEntity.noContent().build();
+
+    }
+
 }

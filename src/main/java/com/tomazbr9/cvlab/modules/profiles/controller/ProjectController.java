@@ -48,4 +48,15 @@ public class ProjectController {
 
     }
 
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<Void> deleteProject(
+            @PathVariable UUID profileId,
+            @PathVariable UUID projectId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        service.deleteProject(profileId, projectId, userDetails.getId());
+        return ResponseEntity.noContent().build();
+
+    }
+
 }

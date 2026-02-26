@@ -13,6 +13,7 @@ import com.tomazbr9.cvlab.modules.profiles.repository.FormationRepository;
 import com.tomazbr9.cvlab.modules.profiles.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -23,15 +24,19 @@ public class FormationService {
     @Autowired FormationMapper mapper;
     @Autowired ProfileRepository profileRepository;
 
+    @Transactional
     public FormationResponseDTO createFormation(UUID profileId, FormationDTO request, UUID userId){
 
         Profile profile = profileRepository.findByIdAndUser_id(profileId, userId).orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
         Formation formation = mapper.toEntity(request);
         formation.setProfile(profile);
 
-        return mapper.toDTO(formation);
+        Formation savedFormation = formationRepository.save(formation);
+
+        return mapper.toDTO(savedFormation);
     }
 
+    @Transactional
     public FormationResponseDTO updateFormation(UUID profileId, UUID formationId, FormationUpdateDTO request, UUID userId){
 
         Formation formation = formationRepository.findByIdAndProfileIdAndProfileUserId(formationId, profileId, userId).orElseThrow(() -> new RuntimeException("Acesso negado ou recurso não encontrado"));
@@ -40,5 +45,11 @@ public class FormationService {
         Formation savedFormation = formationRepository.save(formation);
         return mapper.toDTO(savedFormation);
 
+    }
+
+    @Transactional
+    public void deleteFormation(UUID profileId, UUID formationId, UUID userId){
+        Formation formation = formationRepository.findByIdAndProfileIdAndProfileUserId(formationId, profileId, userId).orElseThrow(() -> new RuntimeException("Acesso negado ou recurso não encontrado"));
+        formationRepository.delete(formation);
     }
 }
