@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 80pt;
+            color: rgba(200, 200, 200, 0.1);
+            z-index: -1000;
+            white-space: nowrap;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #444;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .full-name {
+            font-size: 22pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .contact-info {
+            font-size: 9pt;
+            margin-top: 5px;
+        }
+
+        .section-title {
+            font-size: 13pt;
+            font-weight: bold;
+            color: #2c3e50;
+            border-bottom: 1px solid #ccc;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .item {
+            margin-bottom: 10px;
+        }
+
+        .sub-header {
+            font-style: italic;
+            color: #555;
+            font-size: 10pt;
+        }
+
+        .description {
+            font-size: 10pt;
+            text-align: justify;
+            margin-top: 2px;
+        }
+
+        .skills-list {
+            font-size: 10pt;
+        }
+
+        /* Helper para alinhar datas sem usar Flexbox (que pode falhar em alguns renderizadores) */
+        .clear { clear: both; }
+        .left { float: left; font-weight: bold; }
+        .right { float: right; }
+    </style>
+</head>
+<body>
+
+<div th:if="${showWatermark}" class="watermark">CVLAB</div>
+
+<div class="header">
+    <h1 class="full-name" th:text="${resume.fullName}">NOME COMPLETO</h1>
+    <div class="contact-info">
+        <span th:text="${resume.phone}">Telefone</span> |
+        <span th:text="${resume.email}">Email</span>
+        <br />
+        <span th:each="link, iterStat : ${resume.links}">
+            <span th:text="${link.siteName}">Site</span>: <span th:text="${link.url}">url</span>
+            <span th:if="${!iterStat.last}"> | </span>
+        </span>
+    </div>
+</div>
+
+<div th:if="${resume.professionalSummary != null and !resume.professionalSummary.isEmpty()}">
+    <div class="section-title">Resumo Profissional</div>
+    <div class="description" th:text="${resume.professionalSummary}">Resumo...</div>
+</div>
+
+<div th:if="${!resume.experiences.isEmpty()}">
+    <div class="section-title">Experiência Profissional</div>
+    <div class="item" th:each="exp : ${resume.experiences}">
+        <div>
+            <span class="left" th:text="${exp.jobTitle}">Cargo</span>
+            <span class="right" th:text="${exp.startDate + ' - ' + (exp.endDate != null ? exp.endDate : 'Atualmente')}">Data</span>
+            <div class="clear"></div>
+        </div>
+        <div class="sub-header" th:text="${exp.companyName + ' (' + exp.workPlace + ')'}">Empresa</div>
+        <div class="description" th:text="${exp.description}">Descrição...</div>
+    </div>
+</div>
+
+<div th:if="${!resume.projects.isEmpty()}">
+    <div class="section-title">Projetos</div>
+    <div class="item" th:each="proj : ${resume.projects}">
+        <div>
+            <span class="left" th:text="${proj.projectName}">Nome do Projeto</span>
+            <span class="right" th:if="${proj.startDate != null}" th:text="${proj.startDate + ' - ' + (proj.endDate != null ? proj.endDate : 'Ativo')}">Data</span>
+            <div class="clear"></div>
+        </div>
+        <div class="description" style="font-weight: bold; font-size: 9pt;" th:if="${proj.technologiesUsed != null}" th:text="'Tecnologias: ' + ${proj.technologiesUsed}">Tecnologias</div>
+        <div class="description" th:text="${proj.description}">Descrição...</div>
+    </div>
+</div>
+
+<div th:if="${!resume.formations.isEmpty()}">
+    <div class="section-title">Formação Acadêmica</div>
+    <div class="item" th:each="form : ${resume.formations}">
+        <div>
+            <span class="left" th:text="${form.courseName}">Curso</span>
+            <span class="right" th:text="${form.startDate + ' - ' + (form.endDate != null ? form.endDate : form.formationStatus)}">Data</span>
+            <div class="clear"></div>
+        </div>
+        <div class="sub-header" th:text="${form.institutionName}">Instituição</div>
+    </div>
+</div>
+
+<div th:if="${!resume.skills.isEmpty()}">
+    <div class="section-title">Habilidades</div>
+    <div class="skills-list">
+        <span th:each="skill, iterStat : ${resume.skills}">
+            <strong th:text="${skill.skillName}">Skill</strong>
+            <span th:if="${skill.level != null}" th:text="'(' + ${skill.level} + ')'">(Nível)</span>
+            <span th:if="${!iterStat.last}"> • </span>
+        </span>
+    </div>
+</div>
+
+<div th:if="${!resume.courses.isEmpty()}">
+    <div class="section-title">Cursos e Certificações</div>
+    <div class="item" th:each="c : ${resume.courses}">
+        <div>
+            <span class="left" th:text="${c.courseName}">Curso</span>
+            <span class="right" th:text="${c.workLoad + 'h'}">Carga</span>
+            <div class="clear"></div>
+        </div>
+        <div class="sub-header" th:text="${c.institutionName}">Instituição</div>
+    </div>
+</div>
+
+</body>
+</html>
