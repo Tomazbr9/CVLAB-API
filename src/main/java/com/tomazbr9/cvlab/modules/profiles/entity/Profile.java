@@ -33,7 +33,7 @@ public class Profile {
     private String professionalSummary;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)

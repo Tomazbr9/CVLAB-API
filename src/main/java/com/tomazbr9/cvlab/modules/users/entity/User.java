@@ -4,10 +4,7 @@ import com.tomazbr9.cvlab.modules.auth.entity.Role;
 import com.tomazbr9.cvlab.modules.profiles.entity.Profile;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -19,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class User implements Serializable {
 
     private static final long seriaVersionUID = 1L;
