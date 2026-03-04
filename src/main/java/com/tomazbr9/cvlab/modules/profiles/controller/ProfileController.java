@@ -19,12 +19,11 @@ public class ProfileController {
 
     @Autowired private ProfileService service;
 
-    @GetMapping("/{profileId}")
+    @GetMapping
     public ResponseEntity<ProfileResponseDTO> getProfile(
-            @PathVariable UUID profileId,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        ProfileResponseDTO response = service.getProfile(profileId, userDetails.getId());
+        ProfileResponseDTO response = service.getProfile(userDetails.getId());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

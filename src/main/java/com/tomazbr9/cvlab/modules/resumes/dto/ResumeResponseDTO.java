@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public record ResumeResponseDTO(
         UUID id,
+        String nameResume,
         ResumeDTO optimizedJson,
         String jobDescription,
         boolean isPaidSingle,

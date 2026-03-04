@@ -69,6 +69,7 @@ public class ResumeService {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
         Resume resume = Resume.builder()
+                .nameResume(request.nameResume())
                 .jobDescription(request.jobDescription())
                 .optimizedJson(request.resume())
                 .isPaidSingle(false)

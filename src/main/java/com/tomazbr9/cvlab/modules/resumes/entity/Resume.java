@@ -24,6 +24,9 @@ public class Resume {
     @Column(nullable = false, updatable = false)
     private UUID id;
 
+    @Column(name = "name_resume", nullable = false)
+    private String nameResume;
+
     @Column(name = "job_description", columnDefinition = "TEXT")
     private String jobDescription;
 

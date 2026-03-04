@@ -14,9 +14,10 @@ import com.tomazbr9.cvlab.modules.profiles.dto.skillDTO.SkillDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.skillDTO.SkillResponseDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public record ProfileResponseDTO(
-
+        UUID id,
         String fullName,
         String email,
         String phone,

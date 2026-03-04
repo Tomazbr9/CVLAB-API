@@ -43,8 +43,8 @@ public class ProfileService {
     @Autowired SkillMapper skillMapper;
 
     @Transactional(readOnly = true)
-    public ProfileResponseDTO getProfile(UUID profileId, UUID userId){
-        Profile profile = profileRepository.findByIdAndUser_id(profileId, userId).orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
+    public ProfileResponseDTO getProfile(UUID userId){
+        Profile profile = profileRepository.findByUser_id(userId).orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
         return profileMapper.toDTO(profile);
     }
 

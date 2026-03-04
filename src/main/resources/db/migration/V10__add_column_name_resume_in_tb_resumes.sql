@@ -1,0 +1,1 @@
+ALTER TABLE tb_resumes ADD COLUMN name_resume VARCHAR(255) NOT NULL
