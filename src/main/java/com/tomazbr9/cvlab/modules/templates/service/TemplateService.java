@@ -2,9 +2,6 @@ package com.tomazbr9.cvlab.modules.templates.service;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.tomazbr9.cvlab.modules.resumes.dto.ResumeDTO;
-import com.tomazbr9.cvlab.modules.resumes.entity.Resume;
-import com.tomazbr9.cvlab.modules.resumes.repository.ResumeRepository;
-import com.tomazbr9.cvlab.modules.users.entity.User;
 import com.tomazbr9.cvlab.modules.users.exception.UserNotFoundException;
 import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
