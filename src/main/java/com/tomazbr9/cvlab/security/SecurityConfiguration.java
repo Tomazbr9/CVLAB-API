@@ -24,14 +24,21 @@ public class SecurityConfiguration {
     // Endpoints que não exigem autenticação
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/api/v1/auth/register",
-            "/api/v1/auth/login"
+            "/api/v1/auth/login",
+
+            "/api/v1/templates",
+
+            "/images/**"
     };
 
     // Endpoints que exigem perfil de Usuário
     public static final String[] ENDPOINTS_USER = {
             "api/v1/profiles/**",
+
             "api/v1/resumes/**",
-            "api/v1/templates/**"
+
+            "api/v1/templates/preview/**",
+            "api/v1/templates/download/**"
     };
 
     // Endpoints que exigem perfil de ADMIN

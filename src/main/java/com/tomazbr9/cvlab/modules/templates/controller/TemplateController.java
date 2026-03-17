@@ -1,12 +1,15 @@
 package com.tomazbr9.cvlab.modules.templates.controller;
 
 import com.tomazbr9.cvlab.modules.resumes.dto.ResumeDTO;
+import com.tomazbr9.cvlab.modules.templates.entity.Template;
 import com.tomazbr9.cvlab.modules.templates.service.TemplateService;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/templates")
@@ -44,5 +47,9 @@ public class TemplateController {
                 .body(pdfBytes);
     }
 
-
+    @GetMapping
+    public ResponseEntity<List<Template>> getTemplates(){
+        List<Template> response = service.getTemplates();
+        return ResponseEntity.ok(response);
+    }
 }

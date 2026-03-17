@@ -40,3 +40,6 @@ build/
 
 ### Lombok ###
 .lombok/
+
+# Ignorar credenciais do Google Cloud
+**/google-credentials.json

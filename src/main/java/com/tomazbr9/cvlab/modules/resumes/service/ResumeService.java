@@ -7,6 +7,8 @@ import com.tomazbr9.cvlab.modules.resumes.dto.ResumeResponseDTO;
 import com.tomazbr9.cvlab.modules.resumes.entity.Resume;
 import com.tomazbr9.cvlab.modules.resumes.mapper.ResumeMapper;
 import com.tomazbr9.cvlab.modules.resumes.repository.ResumeRepository;
+import com.tomazbr9.cvlab.modules.subscriptions.entity.Subscription;
+import com.tomazbr9.cvlab.modules.subscriptions.repository.SubscriptionRepository;
 import com.tomazbr9.cvlab.modules.users.entity.User;
 import com.tomazbr9.cvlab.modules.users.exception.UserNotFoundException;
 import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
@@ -32,6 +34,7 @@ public class ResumeService {
     @Autowired ChatClient chatClient;
     @Autowired UserRepository userRepository;
     @Autowired ResumeRepository resumeRepository;
+    @Autowired SubscriptionRepository subscriptionRepository;
     @Autowired ResumeMapper mapper;
 
     public ResumeResponseDTO getResume(UUID resumeId, UUID userId){

@@ -2,6 +2,8 @@ package com.tomazbr9.cvlab.modules.templates.service;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.tomazbr9.cvlab.modules.resumes.dto.ResumeDTO;
+import com.tomazbr9.cvlab.modules.templates.entity.Template;
+import com.tomazbr9.cvlab.modules.templates.repository.TemplateRepository;
 import com.tomazbr9.cvlab.modules.users.exception.UserNotFoundException;
 import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -17,6 +20,7 @@ public class TemplateService {
 
     @Autowired SpringTemplateEngine templateEngine;
     @Autowired UserRepository userRepository;
+    @Autowired TemplateRepository templateRepository;
 
     private byte[] generatePdf(String templateName, ResumeDTO request, boolean showWatermark){
 
@@ -49,6 +53,7 @@ public class TemplateService {
         return generatePdf(templateName, request, false);
     }
 
-
-
+    public List<Template> getTemplates(){
+        return templateRepository.findAll();
+    }
 }
