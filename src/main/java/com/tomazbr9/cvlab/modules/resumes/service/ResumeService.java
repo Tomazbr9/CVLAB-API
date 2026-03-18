@@ -136,6 +136,6 @@ public class ResumeService {
 
     private boolean checkUserPremium(UUID userId){
         Subscription subscription = subscriptionRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Inscrição não encontrada"));
-        return subscription.getPlanType().name().equals(PlanType.PREMIUM.name());
+        return subscription.getPlanType() == PlanType.PREMIUM;
     }
 }

@@ -2,8 +2,14 @@ package com.tomazbr9.cvlab.modules.templates.service;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.tomazbr9.cvlab.modules.resumes.dto.ResumeDTO;
+import com.tomazbr9.cvlab.modules.resumes.entity.Resume;
+import com.tomazbr9.cvlab.modules.resumes.repository.ResumeRepository;
+import com.tomazbr9.cvlab.modules.subscriptions.entity.Subscription;
+import com.tomazbr9.cvlab.modules.subscriptions.enums.PlanType;
+import com.tomazbr9.cvlab.modules.subscriptions.repository.SubscriptionRepository;
 import com.tomazbr9.cvlab.modules.templates.entity.Template;
 import com.tomazbr9.cvlab.modules.templates.repository.TemplateRepository;
+import com.tomazbr9.cvlab.modules.users.entity.User;
 import com.tomazbr9.cvlab.modules.users.exception.UserNotFoundException;
 import com.tomazbr9.cvlab.modules.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +26,8 @@ public class TemplateService {
 
     @Autowired SpringTemplateEngine templateEngine;
     @Autowired UserRepository userRepository;
+    @Autowired SubscriptionRepository subscriptionRepository;
+    @Autowired ResumeRepository resumeRepository;
     @Autowired TemplateRepository templateRepository;
 
     private byte[] generatePdf(String templateName, ResumeDTO request, boolean showWatermark){
@@ -49,11 +57,27 @@ public class TemplateService {
     }
 
     public byte[] getFinalDownload(String templateName, ResumeDTO request, UUID userId){
-        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
-        return generatePdf(templateName, request, false);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+
+        boolean hasPremiumBenefit = userHasPremiumBenefit(user.getId(), request.id());
+
+        boolean showWatermark = !hasPremiumBenefit;
+
+        return generatePdf(templateName, request, showWatermark);
     }
 
     public List<Template> getTemplates(){
         return templateRepository.findAll();
+    }
+
+    private boolean userHasPremiumBenefit(UUID userId, UUID resumeId){
+
+        Subscription subscription = subscriptionRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Inscrição não encontrada"));
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> new RuntimeException("Curriculo não ecnontrado"));
+
+        boolean isPremium = subscription.getPlanType() == PlanType.PREMIUM;
+        boolean resumeWasPurchased = resume.isPaidSingle();
+
+        return isPremium || resumeWasPurchased;
     }
 }
