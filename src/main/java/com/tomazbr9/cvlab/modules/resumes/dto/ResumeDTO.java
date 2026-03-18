@@ -8,9 +8,10 @@ import com.tomazbr9.cvlab.modules.profiles.dto.projectDTO.ProjectDTO;
 import com.tomazbr9.cvlab.modules.profiles.dto.skillDTO.SkillDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public record ResumeDTO(
-
+        UUID id,
         String fullName,
         String email,
         String phone,

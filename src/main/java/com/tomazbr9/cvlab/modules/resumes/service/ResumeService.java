@@ -8,6 +8,7 @@ import com.tomazbr9.cvlab.modules.resumes.entity.Resume;
 import com.tomazbr9.cvlab.modules.resumes.mapper.ResumeMapper;
 import com.tomazbr9.cvlab.modules.resumes.repository.ResumeRepository;
 import com.tomazbr9.cvlab.modules.subscriptions.entity.Subscription;
+import com.tomazbr9.cvlab.modules.subscriptions.enums.PlanType;
 import com.tomazbr9.cvlab.modules.subscriptions.repository.SubscriptionRepository;
 import com.tomazbr9.cvlab.modules.users.entity.User;
 import com.tomazbr9.cvlab.modules.users.exception.UserNotFoundException;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -54,11 +56,18 @@ public class ResumeService {
 
     public ResumeOptimizedResponseDTO optimizedResume(ResumeRequestDTO request, UUID userId) {
 
-        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
-
-        if(request.jobDescription() == null || request.jobDescription().isBlank() || request.resume() == null){
-            throw new RuntimeException("Dados invalidos para processo de otimização");
+        if (request.jobDescription() == null || request.jobDescription().isBlank() ||
+                request.resume() == null || request.resume().id() == null) {
+            throw new RuntimeException("Dados inválidos para processo de otimização");
         }
+
+        Resume resume = resumeRepository.findById(request.resume().id()).orElseThrow(() -> new RuntimeException("Curriculo não encontrado."));
+
+        if(!checkUserPremium(userId) && !resume.isPaidSingle()){
+            throw new RuntimeException("Recurso de otimização apenas para usuários premium ou para cvs comprados");
+        }
+
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
         Prompt prompt = createTemplate(promptResource, request);
 
@@ -67,9 +76,16 @@ public class ResumeService {
         return new ResumeOptimizedResponseDTO(resumeOptimized);
     }
 
+    @Transactional
     public ResumeResponseDTO createResume(ResumeRequestDTO request, UUID userId){
 
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+
+        int qntResumes = resumeRepository.findByUser(user).size();
+
+        if(checkUserPremium(user.getId()) && qntResumes >= 1){
+            throw new RuntimeException("Limite de curriculos excedido, assine o premium para criar mais curriculos");
+        }
 
         Resume resume = Resume.builder()
                 .nameResume(request.nameResume())
@@ -116,5 +132,10 @@ public class ResumeService {
         );
 
         return template.create(model);
+    }
+
+    private boolean checkUserPremium(UUID userId){
+        Subscription subscription = subscriptionRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Inscrição não encontrada"));
+        return subscription.getPlanType().name().equals(PlanType.PREMIUM.name());
     }
 }

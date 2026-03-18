@@ -19,11 +19,10 @@ import java.util.Collections;
 @Service
 public class GooglePlaySubscriptionService {
 
-    @Value("${google.play.package.name}")
+    @Value("${spring.google.play.package.name}")
     private String packageName;
 
-    // Lemos o caminho do arquivo JSON que configuramos no application.properties
-    @Value("${google.play.credentials.path}")
+    @Value("${spring.google.play.credentials.path}")
     private String credentialsPath;
 
     private AndroidPublisher androidPublisher;

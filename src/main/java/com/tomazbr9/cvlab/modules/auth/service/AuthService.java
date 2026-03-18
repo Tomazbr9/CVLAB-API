@@ -2,6 +2,10 @@ package com.tomazbr9.cvlab.modules.auth.service;
 
 import com.tomazbr9.cvlab.modules.auth.dto.JwtTokenDTO;
 import com.tomazbr9.cvlab.modules.auth.dto.LoginDTO;
+import com.tomazbr9.cvlab.modules.subscriptions.entity.Subscription;
+import com.tomazbr9.cvlab.modules.subscriptions.enums.PlanType;
+import com.tomazbr9.cvlab.modules.subscriptions.enums.StatusSubscription;
+import com.tomazbr9.cvlab.modules.subscriptions.repository.SubscriptionRepository;
 import com.tomazbr9.cvlab.modules.users.dto.UserRequestDTO;
 import com.tomazbr9.cvlab.modules.auth.entity.Role;
 import com.tomazbr9.cvlab.modules.users.dto.UserResponseDTO;
@@ -19,6 +23,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -29,8 +34,10 @@ public class AuthService {
     @Autowired AuthenticationManager authenticationManager;
     @Autowired UserRepository userRepository;
     @Autowired RoleRepository roleRepository;
+    @Autowired SubscriptionRepository subscriptionRepository;
     @Autowired SecurityConfiguration securityConfiguration;
 
+    @Transactional
     public UserResponseDTO registerUser(UserRequestDTO request){
 
         Role roleDefault = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RoleNotFoundException("Papel de usuário não encontrado"));
@@ -47,7 +54,14 @@ public class AuthService {
                 .roles(Set.of(roleDefault))
                 .build();
 
+        Subscription subscription = Subscription.builder()
+                .user(user)
+                .planType(PlanType.FREE)
+                .status(StatusSubscription.ACTIVE)
+                .build();
+
         User savedUser = userRepository.save(user);
+        subscriptionRepository.save(subscription);
 
         return new UserResponseDTO(savedUser.getFirstName(), savedUser.getLastName(), savedUser.getEmail());
     }
