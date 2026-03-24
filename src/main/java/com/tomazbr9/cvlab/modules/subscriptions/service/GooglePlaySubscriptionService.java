@@ -6,6 +6,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.androidpublisher.AndroidPublisher;
 import com.google.api.services.androidpublisher.AndroidPublisherScopes;
+import com.google.api.services.androidpublisher.model.ProductPurchase;
 import com.google.api.services.androidpublisher.model.SubscriptionPurchase;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -59,7 +60,7 @@ public class GooglePlaySubscriptionService {
 
     /**
      * Valida um recibo de assinatura diretamente nos servidores do Google.
-     * * @param subscriptionId O ID do plano criado na Play Store (ex: "cv_premium_mensal")
+     * * @param productId O ID do plano criado na Play Store (ex: "cv_premium_mensal")
      * @param purchaseToken O recibo gigante gerado pelo celular do usuário após a compra
      * @return O objeto oficial do Google com os dados da compra, ou null se for inválido
      */
@@ -73,6 +74,24 @@ public class GooglePlaySubscriptionService {
         } catch (Exception e) {
             // Se cair aqui, o token é falso, inválido ou houve erro de rede
             System.err.println("Erro ao validar token no Google: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * NOVO MÉTODO: Valida uma compra ÚNICA (In-App Product) diretamente no Google.
+     * @param productId O ID do produto (ex: "cv_otimizacao_ia_499")
+     * @param purchaseToken O recibo gerado pelo celular
+     * @return O objeto oficial do Google com os dados da compra, ou null se for inválido
+     */
+    public ProductPurchase verifyInAppProduct(String productId, String purchaseToken) {
+        try {
+            return androidPublisher.purchases().products()
+                    .get(packageName, productId, purchaseToken)
+                    .execute();
+
+        } catch (Exception e) {
+            System.err.println("Erro ao validar token de produto único no Google: " + e.getMessage());
             return null;
         }
     }
