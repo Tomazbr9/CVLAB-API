@@ -41,6 +41,9 @@ public class Resume {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "ai_usage_count")
+    private Integer aiUsageCount;
+
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "template_id", nullable = false)
 //    private String templateId;

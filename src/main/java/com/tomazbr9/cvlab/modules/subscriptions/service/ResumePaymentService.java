@@ -39,6 +39,7 @@ public class ResumePaymentService {
                 .orElseThrow(() -> new RuntimeException("Currículo não encontrado"));
 
         resume.setPaidSingle(true);
+        resume.setAiUsageCount(3);
         resumeRepository.save(resume);
 
         return true;

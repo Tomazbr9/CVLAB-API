@@ -67,6 +67,10 @@ public class ResumeService {
             throw new RuntimeException("Recurso de otimização apenas para usuários premium ou para cvs comprados");
         }
 
+        if(resume.getAiUsageCount() != 0){
+            throw new RuntimeException("O numero de otimizaçoes para esse curriculo foi esgotado");
+        }
+
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
         Prompt prompt = createTemplate(promptResource, request);

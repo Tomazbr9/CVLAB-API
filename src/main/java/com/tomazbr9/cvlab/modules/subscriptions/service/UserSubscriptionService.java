@@ -39,6 +39,12 @@ public class UserSubscriptionService {
             return false;
         }
 
+        Integer paymentState = purchase.getPaymentState();
+        if (paymentState != null && paymentState == 0) {
+            System.out.println("Pagamento ainda está pendente processamento pelo banco/Google.");
+            return false;
+        }
+
         // 2. Extrai a data de vencimento que o Google devolveu (vem em milissegundos)
         long expiryTimeMillis = purchase.getExpiryTimeMillis();
         LocalDateTime expiresAt = Instant.ofEpochMilli(expiryTimeMillis)

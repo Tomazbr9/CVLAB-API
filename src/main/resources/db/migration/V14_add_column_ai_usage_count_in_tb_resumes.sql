@@ -1,0 +1,2 @@
+ALTER TABLE tb_resumes
+ADD COLUMN aiUsageCount INTEGER;
