@@ -1,0 +1,2 @@
+ALTER TABLE tb_resumes
+ADD COLUMN ai_usage_count INTEGER DEFAULT 0;

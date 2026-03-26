@@ -42,7 +42,7 @@ public class Resume {
     private User user;
 
     @Column(name = "ai_usage_count")
-    private Integer aiUsageCount;
+    private Integer aiUsageCount = 0;
 
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "template_id", nullable = false)
