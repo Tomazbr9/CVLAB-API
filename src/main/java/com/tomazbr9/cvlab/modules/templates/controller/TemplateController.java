@@ -17,18 +17,15 @@ public class TemplateController {
 
     @Autowired private TemplateService service;
 
-    @PostMapping("/preview/{templateName}")
-    public ResponseEntity<byte[]> preview(
+    @PostMapping(value = "/preview/{templateName}", produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<String> preview(
             @PathVariable String templateName,
             @RequestBody ResumeDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        byte[] pdfBytes = service.getPreview(templateName, request, userDetails.getId());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.inline().filename("preview.pdf").build());
+        String htmlContext = service.getPreview(templateName, request, userDetails.getId());
 
-        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        return new ResponseEntity<>(htmlContext, HttpStatus.OK);
     }
 
     @PostMapping("/download/{templateName}")

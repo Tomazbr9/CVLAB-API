@@ -87,7 +87,9 @@ public class ResumeService {
 
         int qntResumes = resumeRepository.findByUser(user).size();
 
-        if(checkUserPremium(user.getId()) && qntResumes >= 1){
+        boolean isPremium = checkUserPremium(user.getId());
+
+        if(!isPremium && qntResumes >= 1){
             throw new RuntimeException("Limite de curriculos excedido, assine o premium para criar mais curriculos");
         }
 

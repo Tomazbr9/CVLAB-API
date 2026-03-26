@@ -51,10 +51,21 @@ public class TemplateService {
         }
     }
 
-    public byte[] getPreview(String templateName, ResumeDTO request, UUID userId){
+    public String getPreview(String templateName, ResumeDTO request, UUID userId){
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
-        return generatePdf(templateName, request, true);
+
+        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()){
+            Context context = new Context();
+            context.setVariable("resume", request);
+            context.setVariable("showWatermark", true);
+
+            return templateEngine.process(templateName + ".html", context);
+
+        } catch (Exception e){
+            throw new RuntimeException("Erro ao gerar o preview do currículo: " + e.getMessage(), e);
+        }
     }
+
 
     public byte[] getFinalDownload(String templateName, ResumeDTO request, UUID userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
