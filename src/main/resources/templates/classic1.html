@@ -134,8 +134,8 @@
             <p class="job-title" th:text="${proj.projectName}">Nome do Projeto</p>
             <p class="job-meta" th:text="(${proj.technologiesUsed != null ? 'Tech: ' + proj.technologiesUsed : ''}) + (${proj.startDate != null ? ' &ensp;|&ensp; ' + proj.startDate + ' – ' + (proj.endDate != null ? proj.endDate : 'Ativo') : ''})">Tecnologias | Data</p>
             <p class="description-text" style="margin-bottom: 4px;" th:text="${proj.description}">Descrição do projeto...</p>
-            <p style="margin: 0; font-size: 12.5px;" th:if="${proj.url != null and !proj.url.isEmpty()}">
-                <a th:href="${proj.url}" th:text="${proj.url}">Link do projeto</a>
+            <p style="margin: 0; font-size: 12.5px;" th:if="${proj.link != null and !proj.link.isEmpty()}">
+                <a th:href="${proj.link}" th:text="${proj.link}">Link do projeto</a>
             </p>
         </div>
     </section>

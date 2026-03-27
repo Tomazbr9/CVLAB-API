@@ -37,7 +37,7 @@ public class TemplateService {
             context.setVariable("resume", request);
             context.setVariable("showWatermark", showWatermark);
 
-            String processedHtml = templateEngine.process(templateName + ".html", context);
+            String processedHtml = templateEngine.process(templateName, context);
 
             PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.useFastMode();
@@ -54,7 +54,7 @@ public class TemplateService {
     public String getPreview(String templateName, ResumeDTO request, UUID userId){
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()){
+        try {
             Context context = new Context();
             context.setVariable("resume", request);
             context.setVariable("showWatermark", true);
