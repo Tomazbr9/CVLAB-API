@@ -36,7 +36,7 @@ public class TemplateController {
 
         byte[] pdfBytes = service.getFinalDownload(templateName, request, userDetails.getId());
 
-        String fileName = "curriculo_" + request.fullName() + ".pdf".replace("", "-");
+        String fileName = "curriculo_" + request.fullName().replace("", "-" + ".pdf");
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)

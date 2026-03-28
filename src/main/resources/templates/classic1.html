@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <title>Currículo</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
 
     <style>
-        /* Configuração para a página do PDF */
+
+        /* PDF */
         @page {
           size: A4;
           margin: 1.5cm 2cm;
@@ -17,12 +19,38 @@
           font-family: 'Source Sans 3', 'Calibri', 'Arial', sans-serif;
           line-height: 1.45;
           color: #1a1a1a;
-          background-color: #ffffff;
+          background-color: #f3f3f3;
           margin: 0;
           padding: 0;
         }
 
-        /* Marca d'água invisível e gigante no fundo do PDF */
+        /* CONTAINER A4 */
+        .page-container {
+          width: 210mm;
+          min-height: 297mm;
+          margin: 20px auto;
+          background: #ffffff;
+          padding: 1.5cm 2cm;
+          box-sizing: border-box;
+          position: relative;
+        }
+
+        /* impressão */
+        @media print {
+          body {
+            background: white;
+          }
+
+          .page-container {
+            width: auto;
+            min-height: auto;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+          }
+        }
+
+        /* watermark */
         .watermark {
           position: fixed;
           top: 50%;
@@ -34,7 +62,7 @@
           white-space: nowrap;
         }
 
-        /* Estilos de Texto e Cabeçalhos */
+        /* headings */
         .section-heading {
           font-family: 'Crimson Pro', 'Times New Roman', serif;
           letter-spacing: 0.12em;
@@ -78,86 +106,114 @@
         .edu-title { margin: 0; font-weight: 700; font-size: 14.3px; }
         .edu-meta { margin: 0; font-size: 12.3px; color: #444; }
 
-        /* Espaçamento entre seções */
         section { margin-bottom: 20px; }
         .item-block { margin-bottom: 16px; }
+
     </style>
 </head>
+
 <body>
 
-<div th:if="${showWatermark}" class="watermark">CVLAB</div>
+<div class="page-container">
 
-<article class="resume-page">
+    <div th:if="${showWatermark}" class="watermark">CVLAB</div>
 
-    <header style="margin-bottom: 24px;">
-        <h1 class="header-name" th:text="${resume.fullName}">NOME COMPLETO</h1>
-        <p class="contact-row">
-            <span th:text="${resume.phone}">Telefone</span> &ensp;|&ensp;
-            <span th:text="${resume.email}">Email</span>
-            <br th:if="${resume.links != null and !resume.links.isEmpty()}" />
-            <span th:each="link, iterStat : ${resume.links}">
-            <a th:href="${link.url}" th:text="${link.siteName} + ': ' + ${link.url}">Link</a>
-            <span th:if="${!iterStat.last}"> &ensp;|&ensp; </span>
-        </span>
-        </p>
-    </header>
+    <article class="resume-page">
 
-    <section th:if="${resume.professionalSummary != null and !resume.professionalSummary.isEmpty()}">
-        <h2 class="section-heading">Resumo Profissional</h2>
-        <p class="description-text" th:text="${resume.professionalSummary}">Resumo...</p>
-    </section>
+        <header style="margin-bottom: 24px;">
+            <h1 class="header-name" th:text="${resume.fullName}">NOME COMPLETO</h1>
+            <p class="contact-row">
+                <span th:text="${resume.phone}">Telefone</span> &#8194;|&#8194;
+                <span th:text="${resume.email}">Email</span>
 
-    <section th:if="${!resume.skills.isEmpty()}">
-        <h2 class="section-heading">Habilidades Técnicas</h2>
-        <p style="margin: 0; font-size: 13.5px;">
-        <span th:each="skill, iterStat : ${resume.skills}">
-            <strong th:text="${skill.skillName}">Skill</strong>
-            <span th:if="${skill.level != null}" th:text="' (' + ${skill.level} + ')'"></span><span th:if="${!iterStat.last}">, </span>
-        </span>
-        </p>
-    </section>
+                <br th:if="${resume.links != null and !resume.links.isEmpty()}" />
 
-    <section th:if="${!resume.experiences.isEmpty()}">
-        <h2 class="section-heading">Experiência Profissional</h2>
-
-        <div class="item-block" th:each="exp : ${resume.experiences}">
-            <p class="job-title" th:text="${exp.jobTitle}">Cargo</p>
-            <p class="job-meta" th:text="${exp.companyName} + (${exp.workPlace != null ? ' | ' + exp.workPlace : ''}) + ' &ensp;|&ensp; ' + ${exp.startDate} + ' – ' + (${exp.endDate != null ? exp.endDate : 'Atual'})">Empresa | Local | Data</p>
-            <p class="description-text" style="margin-bottom: 8px;" th:text="${exp.description}">Descrição da experiência...</p>
-        </div>
-    </section>
-
-    <section th:if="${!resume.projects.isEmpty()}">
-        <h2 class="section-heading">Projetos de Destaque</h2>
-
-        <div class="item-block" th:each="proj : ${resume.projects}">
-            <p class="job-title" th:text="${proj.projectName}">Nome do Projeto</p>
-            <p class="job-meta" th:text="(${proj.technologiesUsed != null ? 'Tech: ' + proj.technologiesUsed : ''}) + (${proj.startDate != null ? ' &ensp;|&ensp; ' + proj.startDate + ' – ' + (proj.endDate != null ? proj.endDate : 'Ativo') : ''})">Tecnologias | Data</p>
-            <p class="description-text" style="margin-bottom: 4px;" th:text="${proj.description}">Descrição do projeto...</p>
-            <p style="margin: 0; font-size: 12.5px;" th:if="${proj.link != null and !proj.link.isEmpty()}">
-                <a th:href="${proj.link}" th:text="${proj.link}">Link do projeto</a>
+                <span th:each="link, iterStat : ${resume.links}">
+<a th:href="${link.url}" th:text="${link.siteName} + ': ' + ${link.url}">Link</a>
+<span th:if="${!iterStat.last}"> &#8194;|&#8194; </span>
+</span>
             </p>
-        </div>
-    </section>
+        </header>
 
-    <section th:if="${!resume.formations.isEmpty()}">
-        <h2 class="section-heading">Formação Acadêmica</h2>
+        <section th:if="${resume.professionalSummary != null and !resume.professionalSummary.isEmpty()}">
+            <h2 class="section-heading">Resumo Profissional</h2>
+            <p class="description-text" th:text="${resume.professionalSummary}">Resumo...</p>
+        </section>
 
-        <div style="margin-bottom: 12px;" th:each="form : ${resume.formations}">
-            <p class="edu-title" th:text="${form.courseName}">Curso</p>
-            <p class="edu-meta" th:text="${form.institutionName} + ' &ensp;|&ensp; ' + ${form.startDate} + ' – ' + (${form.endDate != null ? form.endDate : form.formationStatus})">Instituição | Data</p>
-        </div>
-    </section>
+        <section th:if="${!resume.skills.isEmpty()}">
+            <h2 class="section-heading">Habilidades Técnicas</h2>
+            <p style="margin: 0; font-size: 13.5px;">
+<span th:each="skill, iterStat : ${resume.skills}">
+<strong th:text="${skill.skillName}">Skill</strong>
+<span th:if="${skill.level != null}" th:text="' (' + ${skill.level} + ')'"></span>
+<span th:if="${!iterStat.last}">, </span>
+</span>
+            </p>
+        </section>
 
-    <section th:if="${!resume.courses.isEmpty()}">
-        <h2 class="section-heading">Cursos e Certificações</h2>
+        <section th:if="${!resume.experiences.isEmpty()}">
+            <h2 class="section-heading">Experiência Profissional</h2>
 
-        <div style="margin-bottom: 8px;" th:each="c : ${resume.courses}">
-            <p class="edu-title" th:text="${c.courseName}">Nome do Curso</p>
-            <p class="edu-meta" th:text="${c.institutionName} + (${c.workLoad != null ? ' &ensp;|&ensp; ' + c.workLoad + 'h' : ''})">Instituição | Carga Horária</p>
-        </div>
-    </section>
+            <div class="item-block" th:each="exp : ${resume.experiences}">
+                <p class="job-title" th:text="${exp.jobTitle}">Cargo</p>
+                <p class="job-meta"
+                   th:text="${exp.companyName} + (${exp.workPlace != null ? ' | ' + exp.workPlace : ''}) + ' | ' + ${exp.startDate} + ' – ' + (${exp.endDate != null ? exp.endDate : 'Atual'})">
+                    Empresa | Local | Data
+                </p>
+                <p class="description-text" style="margin-bottom: 8px;" th:text="${exp.description}">
+                    Descrição da experiência...
+                </p>
+            </div>
+        </section>
 
-</article>
+        <section th:if="${!resume.projects.isEmpty()}">
+            <h2 class="section-heading">Projetos de Destaque</h2>
+
+            <div class="item-block" th:each="proj : ${resume.projects}">
+                <p class="job-title" th:text="${proj.projectName}">Nome do Projeto</p>
+                <p class="job-meta"
+                   th:text="(${proj.technologiesUsed != null ? 'Tech: ' + proj.technologiesUsed : ''}) +
+   (${proj.startDate != null ? ' | ' + proj.startDate + ' – ' + (proj.endDate != null ? proj.endDate : 'Ativo') : ''})">
+                    Tecnologias | Data
+                </p>
+
+                <p class="description-text" style="margin-bottom: 4px;" th:text="${proj.description}">
+                    Descrição do projeto...
+                </p>
+
+                <p style="margin: 0; font-size: 12.5px;"
+                   th:if="${proj.link != null and !proj.link.isEmpty()}">
+                    <a th:href="${proj.link}" th:text="${proj.link}">Link do projeto</a>
+                </p>
+            </div>
+        </section>
+
+        <section th:if="${!resume.formations.isEmpty()}">
+            <h2 class="section-heading">Formação Acadêmica</h2>
+
+            <div style="margin-bottom: 12px;" th:each="form : ${resume.formations}">
+                <p class="edu-title" th:text="${form.courseName}">Curso</p>
+                <p class="edu-meta"
+                   th:text="${form.institutionName} + ' | ' + ${form.startDate} + ' – ' + (${form.endDate != null ? form.endDate : form.formationStatus})">
+                    Instituição | Data
+                </p>
+            </div>
+        </section>
+
+        <section th:if="${!resume.courses.isEmpty()}">
+            <h2 class="section-heading">Cursos e Certificações</h2>
+
+            <div style="margin-bottom: 8px;" th:each="c : ${resume.courses}">
+                <p class="edu-title" th:text="${c.courseName}">Nome do Curso</p>
+                <p class="edu-meta"
+                   th:text="${c.institutionName} + (${c.workLoad != null ? ' | ' + c.workLoad + 'h' : ''})">
+                    Instituição | Carga Horária
+                </p>
+            </div>
+        </section>
+
+    </article>
+</div>
+
 </body>
 </html>
