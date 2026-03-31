@@ -2,109 +2,110 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Currículo</title>
+    <title th:text="'Currículo - ' + ${resume.fullName}">Currículo</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
 
     <style>
-
-        /* PDF */
+        /* Configuração nativa do Java para o PDF */
         @page {
-          size: A4;
-          margin: 1.5cm 2cm;
+            size: A4;
+            margin: 1.5cm 2cm 2.5cm 2cm;
+
+            @bottom-center {
+                content: "Criado com CVLab   |   cvlab.com.br";
+                font-family: 'Calibri', 'Arial', sans-serif;
+                font-size: 7pt; /* Convertido para pt */
+                color: #bbbbbb;
+                letter-spacing: 0.05em;
+                vertical-align: middle;
+                border-top: 0.5px solid #e0e0e0;
+                padding-top: 4px;
+            }
         }
 
         body {
-          font-family: 'Source Sans 3', 'Calibri', 'Arial', sans-serif;
-          line-height: 1.45;
-          color: #1a1a1a;
-          background-color: #f3f3f3;
-          margin: 0;
-          padding: 0;
-        }
-
-        /* CONTAINER A4 */
-        .page-container {
-          width: 210mm;
-          min-height: 297mm;
-          margin: 20px auto;
-          background: #ffffff;
-          padding: 1.5cm 2cm;
-          box-sizing: border-box;
-          position: relative;
-        }
-
-        /* impressão */
-        @media print {
-          body {
-            background: white;
-          }
-
-          .page-container {
-            width: auto;
-            min-height: auto;
+            font-family: 'Calibri', 'Arial', sans-serif;
+            line-height: 1.45;
+            color: #1a1a1a;
+            background-color: #525659;
             margin: 0;
-            padding: 0;
-            box-shadow: none;
-          }
+            padding: 20px 0;
         }
 
-        /* watermark */
-        .watermark {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) rotate(-45deg);
-          font-size: 80pt;
-          color: rgba(200, 200, 200, 0.15);
-          z-index: -1000;
-          white-space: nowrap;
+        /* CONTAINER A4 - Fixo em milímetros */
+        .page-container {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            /* Margens visuais exatas do @page */
+            padding: 1.5cm 2cm 2.5cm 2cm;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+
+            /* Ilusão de quebra de página */
+            background-image: linear-gradient(to bottom, transparent 295mm, #d3d3d3 295.5mm, #525659 296mm, transparent 297mm);
+            background-size: 100% 297mm;
         }
 
-        /* headings */
+        /* REGRAS DE IMPRESSÃO EXTREMAS */
+        @media print {
+            body {
+                background-color: #ffffff;
+                padding: 0 !important;
+            }
+            .page-container {
+                width: 100% !important;
+                min-height: 0 !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important; /* Zera para o @page assumir o controle */
+                box-shadow: none !important;
+                background-image: none !important;
+            }
+            article, section, header { display: block; }
+            article section:last-child { margin-bottom: 0 !important; }
+        }
+
+        /* TIPOGRAFIA EM PONTOS (pt) - Garante o mesmo tamanho na Web e no PDF */
         .section-heading {
-          font-family: 'Crimson Pro', 'Times New Roman', serif;
-          letter-spacing: 0.12em;
-          border-bottom: 1.5px solid #1a1a1a;
-          padding-bottom: 3px;
-          margin-bottom: 12px;
-          font-weight: 700;
-          font-size: 16px;
-          margin-top: 0;
-          text-transform: uppercase;
-        }
-
-        .job-title { font-weight: 700; font-size: 14.7px; margin: 0; }
-        .job-meta { font-weight: 500; color: #444; font-size: 12.3px; margin: 0 0 5px 0; }
-
-        .description-text {
-          margin: 0 0 16px 0;
-          font-size: 13.5px;
-          text-align: justify;
+            font-family: 'Crimson Pro', serif;
+            letter-spacing: 0.12em;
+            border-bottom: 1.5px solid #1a1a1a;
+            padding-bottom: 3px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            font-size: 12pt; /* Era 16px */
+            margin-top: 0;
+            text-transform: uppercase;
         }
 
         .header-name {
-          font-family: 'Crimson Pro', 'Times New Roman', serif;
-          letter-spacing: 0.08em;
-          font-size: 26px;
-          font-weight: 700;
-          margin: 0 0 6px 0;
-          text-align: center;
-          text-transform: uppercase;
+            font-family: 'Crimson Pro', serif;
+            letter-spacing: 0.08em;
+            font-size: 20pt; /* Era 26px */
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            text-align: center;
+            text-transform: uppercase;
         }
 
-        .contact-row {
-          font-size: 12px;
-          color: #444;
-          margin: 0;
-          line-height: 1.6;
-          text-align: center;
+        .contact-row { font-size: 9pt; color: #444; text-align: center; line-height: 1.6; margin: 0; }
+        .contact-row a { text-decoration: none; color: #444; }
+
+        .job-title { font-weight: 700; font-size: 11pt; margin: 0; } /* Era 14.7px */
+        .job-meta { font-weight: 500; color: #444; font-size: 9.5pt; margin: 0 0 5px 0; } /* Era 12.3px */
+
+        .description-text {
+            margin: 0 0 16px 0;
+            font-size: 10.5pt; /* Era 13.5px */
+            text-align: justify;
         }
 
-        .contact-row a { text-decoration: none; color: #1a1a1a; }
-        .edu-title { margin: 0; font-weight: 700; font-size: 14.3px; }
-        .edu-meta { margin: 0; font-size: 12.3px; color: #444; }
+        .edu-title { margin: 0; font-weight: 700; font-size: 11pt; }
+        .edu-meta  { margin: 0; font-size: 9.5pt; color: #444; }
 
         section { margin-bottom: 20px; }
         .item-block { margin-bottom: 16px; }
@@ -113,107 +114,95 @@
 </head>
 
 <body>
-
 <div class="page-container">
 
-    <div th:if="${showWatermark}" class="watermark">CVLAB</div>
+    <header style="margin-bottom: 24px;">
+        <h1 class="header-name" th:text="${resume.fullName}">NOME COMPLETO</h1>
 
-    <article class="resume-page">
+        <p class="contact-row">
+            <span th:if="${resume.phone != null}" th:text="${resume.phone}"></span>
+            <span th:if="${resume.phone != null and resume.email != null}"> | </span>
+            <span th:if="${resume.email != null}" th:text="${resume.email}"></span>
+            <br th:if="${resume.links != null and !resume.links.isEmpty()}" />
+            <span th:if="${resume.links != null}">
+      <span th:each="link, iterStat : ${resume.links}">
+          <span th:text="${link.siteName} + ': '"></span><a th:href="${link.url}" th:text="${link.url}"></a>
+          <span th:if="${!iterStat.last}"> | </span>
+      </span>
+  </span>
+        </p>
+    </header>
 
-        <header style="margin-bottom: 24px;">
-            <h1 class="header-name" th:text="${resume.fullName}">NOME COMPLETO</h1>
-            <p class="contact-row">
-                <span th:text="${resume.phone}">Telefone</span> &#8194;|&#8194;
-                <span th:text="${resume.email}">Email</span>
+    <section th:if="${resume.professionalSummary != null and !resume.professionalSummary.isEmpty()}">
+        <h2 class="section-heading">Resumo Profissional</h2>
+        <p class="description-text" th:text="${resume.professionalSummary}">
+            Resumo...
+        </p>
+    </section>
 
-                <br th:if="${resume.links != null and !resume.links.isEmpty()}" />
+    <section th:if="${resume.skills != null and !resume.skills.isEmpty()}">
+        <h2 class="section-heading">Habilidades Técnicas</h2>
+        <p style="font-size:13.5px;">
+  <span th:each="skill, iterStat : ${resume.skills}">
+    <b th:text="${skill.skillName}">Skill</b><span th:if="${skill.level != null}" th:text="' (' + ${skill.level} + ')'"></span><span th:if="${!iterStat.last}">, </span>
+  </span>
+        </p>
+    </section>
 
-                <span th:each="link, iterStat : ${resume.links}">
-<a th:href="${link.url}" th:text="${link.siteName} + ': ' + ${link.url}">Link</a>
-<span th:if="${!iterStat.last}"> &#8194;|&#8194; </span>
-</span>
+    <section th:if="${resume.experiences != null and !resume.experiences.isEmpty()}">
+        <h2 class="section-heading">Experiência Profissional</h2>
+        <div style="margin-bottom: 16px;" th:each="exp : ${resume.experiences}">
+            <p class="job-title" th:text="${exp.jobTitle}">Cargo</p>
+            <p class="job-meta">
+                <span th:text="${exp.companyName}">Empresa</span>
+                <span th:if="${exp.workPlace != null}" th:text="' | ' + ${exp.workPlace}"></span>
+                <span th:if="${exp.startDate != null}" th:text="' | ' + ${exp.startDate}"></span>
+                <span th:text="' – ' + (${exp.endDate != null ? exp.endDate : 'Atual'})"></span>
             </p>
-        </header>
+            <p class="description-text" th:if="${exp.description != null}" th:text="${exp.description}">Descrição...</p>
+        </div>
+    </section>
 
-        <section th:if="${resume.professionalSummary != null and !resume.professionalSummary.isEmpty()}">
-            <h2 class="section-heading">Resumo Profissional</h2>
-            <p class="description-text" th:text="${resume.professionalSummary}">Resumo...</p>
-        </section>
-
-        <section th:if="${!resume.skills.isEmpty()}">
-            <h2 class="section-heading">Habilidades Técnicas</h2>
-            <p style="margin: 0; font-size: 13.5px;">
-<span th:each="skill, iterStat : ${resume.skills}">
-<strong th:text="${skill.skillName}">Skill</strong>
-<span th:if="${skill.level != null}" th:text="' (' + ${skill.level} + ')'"></span>
-<span th:if="${!iterStat.last}">, </span>
-</span>
+    <section th:if="${resume.projects != null and !resume.projects.isEmpty()}">
+        <h2 class="section-heading">Projetos</h2>
+        <div style="margin-bottom: 16px;" th:each="proj : ${resume.projects}">
+            <p class="job-title" th:text="${proj.projectName}">Nome do Projeto</p>
+            <p class="job-meta">
+                <span th:if="${proj.technologiesUsed != null}" th:text="${proj.technologiesUsed}"></span>
+                <span th:if="${proj.technologiesUsed != null and proj.startDate != null}"> | </span>
+                <span th:if="${proj.startDate != null}" th:text="${proj.startDate}"></span>
+                <span th:if="${proj.startDate != null}" th:text="' – ' + (${proj.endDate != null ? proj.endDate : 'Ativo'})"></span>
             </p>
-        </section>
+            <p class="description-text" th:if="${proj.description != null}" th:text="${proj.description}">Descrição...</p>
+            <p style="font-size:12px; margin:0;" th:if="${proj.link != null and !proj.link.isEmpty()}">
+                <a th:href="${proj.link}" th:text="${proj.link}" style="color: #444; text-decoration: none;">Link do projeto</a>
+            </p>
+        </div>
+    </section>
 
-        <section th:if="${!resume.experiences.isEmpty()}">
-            <h2 class="section-heading">Experiência Profissional</h2>
+    <section th:if="${resume.formations != null and !resume.formations.isEmpty()}">
+        <h2 class="section-heading">Formação Acadêmica</h2>
+        <div style="margin-bottom: 12px;" th:each="form : ${resume.formations}">
+            <p class="job-title" th:text="${form.courseName}">Curso</p>
+            <p class="job-meta">
+                <span th:text="${form.institutionName}"></span>
+                <span th:if="${form.startDate != null}" th:text="' | ' + ${form.startDate}"></span>
+                <span th:text="' – ' + (${form.endDate != null ? form.endDate : form.formationStatus})"></span>
+            </p>
+        </div>
+    </section>
 
-            <div class="item-block" th:each="exp : ${resume.experiences}">
-                <p class="job-title" th:text="${exp.jobTitle}">Cargo</p>
-                <p class="job-meta"
-                   th:text="${exp.companyName} + (${exp.workPlace != null ? ' | ' + exp.workPlace : ''}) + ' | ' + ${exp.startDate} + ' – ' + (${exp.endDate != null ? exp.endDate : 'Atual'})">
-                    Empresa | Local | Data
-                </p>
-                <p class="description-text" style="margin-bottom: 8px;" th:text="${exp.description}">
-                    Descrição da experiência...
-                </p>
-            </div>
-        </section>
+    <section th:if="${resume.courses != null and !resume.courses.isEmpty()}">
+        <h2 class="section-heading">Cursos</h2>
+        <div style="margin-bottom: 12px;" th:each="c : ${resume.courses}">
+            <p class="job-title" th:text="${c.courseName}">Curso</p>
+            <p class="job-meta">
+                <span th:text="${c.institutionName}"></span>
+                <span th:if="${c.workLoad != null}" th:text="' | ' + ${c.workLoad}"></span>
+            </p>
+        </div>
+    </section>
 
-        <section th:if="${!resume.projects.isEmpty()}">
-            <h2 class="section-heading">Projetos de Destaque</h2>
-
-            <div class="item-block" th:each="proj : ${resume.projects}">
-                <p class="job-title" th:text="${proj.projectName}">Nome do Projeto</p>
-                <p class="job-meta"
-                   th:text="(${proj.technologiesUsed != null ? 'Tech: ' + proj.technologiesUsed : ''}) +
-   (${proj.startDate != null ? ' | ' + proj.startDate + ' – ' + (proj.endDate != null ? proj.endDate : 'Ativo') : ''})">
-                    Tecnologias | Data
-                </p>
-
-                <p class="description-text" style="margin-bottom: 4px;" th:text="${proj.description}">
-                    Descrição do projeto...
-                </p>
-
-                <p style="margin: 0; font-size: 12.5px;"
-                   th:if="${proj.link != null and !proj.link.isEmpty()}">
-                    <a th:href="${proj.link}" th:text="${proj.link}">Link do projeto</a>
-                </p>
-            </div>
-        </section>
-
-        <section th:if="${!resume.formations.isEmpty()}">
-            <h2 class="section-heading">Formação Acadêmica</h2>
-
-            <div style="margin-bottom: 12px;" th:each="form : ${resume.formations}">
-                <p class="edu-title" th:text="${form.courseName}">Curso</p>
-                <p class="edu-meta"
-                   th:text="${form.institutionName} + ' | ' + ${form.startDate} + ' – ' + (${form.endDate != null ? form.endDate : form.formationStatus})">
-                    Instituição | Data
-                </p>
-            </div>
-        </section>
-
-        <section th:if="${!resume.courses.isEmpty()}">
-            <h2 class="section-heading">Cursos e Certificações</h2>
-
-            <div style="margin-bottom: 8px;" th:each="c : ${resume.courses}">
-                <p class="edu-title" th:text="${c.courseName}">Nome do Curso</p>
-                <p class="edu-meta"
-                   th:text="${c.institutionName} + (${c.workLoad != null ? ' | ' + c.workLoad + 'h' : ''})">
-                    Instituição | Carga Horária
-                </p>
-            </div>
-        </section>
-
-    </article>
 </div>
-
 </body>
 </html>
