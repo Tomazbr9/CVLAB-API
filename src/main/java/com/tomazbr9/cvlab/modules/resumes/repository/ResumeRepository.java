@@ -12,5 +12,7 @@ public interface ResumeRepository extends JpaRepository<Resume, UUID> {
 
     Optional<Resume> findByIdAndUser(UUID resumeId, User user);
 
+    Integer countByUser(User user);
+
     List<Resume> findByUser(User user);
 }

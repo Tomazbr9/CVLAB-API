@@ -1,9 +1,6 @@
 package com.tomazbr9.cvlab.modules.resumes.controller;
 
-import com.tomazbr9.cvlab.modules.resumes.dto.ResumeDTO;
-import com.tomazbr9.cvlab.modules.resumes.dto.ResumeRequestDTO;
-import com.tomazbr9.cvlab.modules.resumes.dto.ResumeOptimizedResponseDTO;
-import com.tomazbr9.cvlab.modules.resumes.dto.ResumeResponseDTO;
+import com.tomazbr9.cvlab.modules.resumes.dto.*;
 import com.tomazbr9.cvlab.modules.resumes.service.ResumeService;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +33,7 @@ public class ResumeController {
 
     @PostMapping("/optimized")
     public ResponseEntity<ResumeOptimizedResponseDTO> optimizedResume(
-            @RequestBody ResumeRequestDTO request,
+            @RequestBody ResumeToOptimizedRequestDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         ResumeOptimizedResponseDTO response = service.optimizedResume(request, userDetails.getId());

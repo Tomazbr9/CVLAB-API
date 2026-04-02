@@ -1,9 +1,6 @@
 package com.tomazbr9.cvlab.modules.resumes.service;
 
-import com.tomazbr9.cvlab.modules.resumes.dto.ResumeDTO;
-import com.tomazbr9.cvlab.modules.resumes.dto.ResumeRequestDTO;
-import com.tomazbr9.cvlab.modules.resumes.dto.ResumeOptimizedResponseDTO;
-import com.tomazbr9.cvlab.modules.resumes.dto.ResumeResponseDTO;
+import com.tomazbr9.cvlab.modules.resumes.dto.*;
 import com.tomazbr9.cvlab.modules.resumes.entity.Resume;
 import com.tomazbr9.cvlab.modules.resumes.mapper.ResumeMapper;
 import com.tomazbr9.cvlab.modules.resumes.repository.ResumeRepository;
@@ -54,16 +51,18 @@ public class ResumeService {
         return mapper.toDTOList(resumes);
     }
 
-    public ResumeOptimizedResponseDTO optimizedResume(ResumeRequestDTO request, UUID userId) {
+    public ResumeOptimizedResponseDTO optimizedResume(ResumeToOptimizedRequestDTO request, UUID userId) {
 
-        if (request.jobDescription() == null || request.jobDescription().isBlank() ||
-                request.resume() == null || request.resume().id() == null) {
+        if (request.jobDescription() == null || request.jobDescription().isBlank() || request.id() == null) {
             throw new RuntimeException("Dados inválidos para processo de otimização");
         }
 
-        Resume resume = resumeRepository.findById(request.resume().id()).orElseThrow(() -> new RuntimeException("Curriculo não encontrado."));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        if(!checkUserPremium(userId) && !resume.isPaidSingle()){
+
+        Resume resume = resumeRepository.findById(request.id()).orElseThrow(() -> new RuntimeException("Curriculo não encontrado."));
+
+        if(!checkUserPremium(user) && !resume.isPaidSingle()){
             throw new RuntimeException("Recurso de otimização apenas para usuários premium ou para cvs comprados");
         }
 
@@ -73,24 +72,28 @@ public class ResumeService {
 
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        Prompt prompt = createTemplate(promptResource, request);
+        Prompt prompt = createTemplate(promptResource, resume.getOptimizedJson(), request.jobDescription());
 
         ResumeDTO resumeOptimized = chatClient.prompt(prompt).call().entity(ResumeDTO.class);
+
+        resume.setOptimizedJson(resumeOptimized);
+        resumeRepository.save(resume);
 
         return new ResumeOptimizedResponseDTO(resumeOptimized);
     }
 
     @Transactional
-    public ResumeResponseDTO createResume(ResumeRequestDTO request, UUID userId){
+    public ResumeResponseDTO createResume(ResumeRequestDTO request, UUID userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        int qntResumes = resumeRepository.findByUser(user).size();
+        long qntResumes = resumeRepository.countByUser(user);
 
-        boolean isPremium = checkUserPremium(user.getId());
+        boolean isPremium = checkUserPremium(user);
 
-        if(!isPremium && qntResumes >= 1){
-            throw new RuntimeException("Limite de curriculos excedido, assine o premium para criar mais curriculos");
+        if (!isPremium && qntResumes >= 1) {
+            throw new RuntimeException("Limite de currículos excedido. Assine o premium para criar mais currículos.");
         }
 
         Resume resume = Resume.builder()
@@ -106,7 +109,6 @@ public class ResumeService {
         Resume savedResume = resumeRepository.save(resume);
 
         return mapper.toDTO(savedResume);
-
     }
 
     public ResumeResponseDTO updateResume(UUID resumeId, ResumeDTO request, UUID userId){
@@ -128,20 +130,20 @@ public class ResumeService {
         resumeRepository.delete(resume);
     }
 
-    private Prompt createTemplate(Resource promptResource, ResumeRequestDTO request){
+    private Prompt createTemplate(Resource promptResource, ResumeDTO resume, String jobDescription){
 
         PromptTemplate template = new PromptTemplate(promptResource);
 
         Map<String, Object> model = Map.of(
-                "resume", request.resume(),
-                "jobDescription", request.jobDescription()
+                "resume", resume,
+                "jobDescription", jobDescription
         );
 
         return template.create(model);
     }
 
-    private boolean checkUserPremium(UUID userId){
-        Subscription subscription = subscriptionRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Inscrição não encontrada"));
+    private boolean checkUserPremium(User user){
+        Subscription subscription = subscriptionRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Inscrição não encontrada"));
         return subscription.getPlanType() == PlanType.PREMIUM;
     }
 }

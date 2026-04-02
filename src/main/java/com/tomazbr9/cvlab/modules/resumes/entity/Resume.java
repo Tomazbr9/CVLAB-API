@@ -4,7 +4,9 @@ import com.tomazbr9.cvlab.modules.resumes.dto.ResumeDTO;
 import com.tomazbr9.cvlab.modules.users.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
@@ -41,16 +43,15 @@ public class Resume {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "ai_usage_count")
+    @Column(name = "ai_usage_count", nullable = false)
+    @Builder.Default
     private Integer aiUsageCount = 0;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "template_id", nullable = false)
-//    private String templateId;
-
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    @UpdateTimestamp
     @Column(name = "update_at", nullable = false)
     private Instant updateAt;
 

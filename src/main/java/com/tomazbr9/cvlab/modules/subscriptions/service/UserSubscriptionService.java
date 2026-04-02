@@ -1,6 +1,7 @@
 package com.tomazbr9.cvlab.modules.subscriptions.service;
 
 import com.google.api.services.androidpublisher.model.SubscriptionPurchase;
+import com.tomazbr9.cvlab.modules.subscriptions.dto.SubscriptionResponseDTO;
 import com.tomazbr9.cvlab.modules.subscriptions.entity.Subscription;
 import com.tomazbr9.cvlab.modules.subscriptions.enums.PlanType;
 import com.tomazbr9.cvlab.modules.subscriptions.enums.StatusSubscription;
@@ -27,6 +28,17 @@ public class UserSubscriptionService {
 
     @Autowired
     private GooglePlaySubscriptionService googlePlayService;
+
+    public SubscriptionResponseDTO getSubscription(UUID userId){
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        Subscription subscription = subscriptionRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Assinatura não encontrada"));
+
+        return new SubscriptionResponseDTO(subscription.getPlanType());
+
+    }
 
     @Transactional
     public boolean verifyAndActivatePremium(UUID userId, String subscriptionId, String purchaseToken) {
@@ -60,7 +72,7 @@ public class UserSubscriptionService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        Subscription subscription = subscriptionRepository.findByUserId(userId)
+        Subscription subscription = subscriptionRepository.findByUser(user)
                 .orElse(Subscription.builder().user(user).build());
 
         // 4. Atualiza os dados para PREMIUM

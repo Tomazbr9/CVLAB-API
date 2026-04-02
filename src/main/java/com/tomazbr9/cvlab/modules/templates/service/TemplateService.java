@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +44,56 @@ public class TemplateService {
             PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.useFastMode();
             builder.withHtmlContent(processedHtml, "/");
+
+            builder.useFont(
+                    () -> {
+                        try {
+                            return new ClassPathResource("fonts/CrimsonPro-Regular.ttf").getInputStream();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    "Crimson Pro"
+            );
+            builder.useFont(
+                    () -> {
+                        try {
+                            return new ClassPathResource("fonts/CrimsonPro-Bold.ttf").getInputStream();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    "Crimson Pro",
+                    700,
+                    com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle.NORMAL,
+                    true
+            );
+
+            builder.useFont(
+                    () -> {
+                        try {
+                            return new ClassPathResource("fonts/SourceSans3-Regular.ttf").getInputStream();
+                        } catch (IOException e) {
+                            throw new RuntimeException("Erro ao carregar SourceSans3-Regular", e);
+                        }
+                    },
+                    "Source Sans 3"
+            );
+
+            builder.useFont(
+                    () -> {
+                        try {
+                            return new ClassPathResource("fonts/SourceSans3-Bold.ttf").getInputStream();
+                        } catch (IOException e) {
+                            throw new RuntimeException("Erro ao carregar SourceSans3-Bold", e);
+                        }
+                    },
+                    "Source Sans 3",
+                    700,
+                    com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle.NORMAL,
+                    true
+            );
+
             builder.toStream(outputStream);
             builder.run();
 
@@ -70,7 +122,7 @@ public class TemplateService {
     public byte[] getFinalDownload(String templateName, ResumeDTO request, UUID userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        boolean hasPremiumBenefit = userHasPremiumBenefit(user.getId(), request.id());
+        boolean hasPremiumBenefit = userHasPremiumBenefit(user, request.id());
 
         boolean showWatermark = !hasPremiumBenefit;
 
@@ -81,9 +133,9 @@ public class TemplateService {
         return templateRepository.findAll();
     }
 
-    private boolean userHasPremiumBenefit(UUID userId, UUID resumeId){
+    private boolean userHasPremiumBenefit(User user, UUID resumeId){
 
-        Subscription subscription = subscriptionRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Inscrição não encontrada"));
+        Subscription subscription = subscriptionRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Inscrição não encontrada"));
         Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> new RuntimeException("Curriculo não ecnontrado"));
 
         boolean isPremium = subscription.getPlanType() == PlanType.PREMIUM;

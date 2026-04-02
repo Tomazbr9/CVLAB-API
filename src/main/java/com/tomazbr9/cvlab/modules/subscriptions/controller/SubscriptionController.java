@@ -1,6 +1,7 @@
 package com.tomazbr9.cvlab.modules.subscriptions.controller;
 
 import com.tomazbr9.cvlab.modules.subscriptions.dto.PaymentVerificationRequestDTO;
+import com.tomazbr9.cvlab.modules.subscriptions.dto.SubscriptionResponseDTO;
 import com.tomazbr9.cvlab.modules.subscriptions.service.ResumePaymentService;
 import com.tomazbr9.cvlab.modules.subscriptions.service.UserSubscriptionService;
 import com.tomazbr9.cvlab.security.model.UserDetailsImpl;
@@ -22,6 +23,13 @@ public class SubscriptionController {
 
     @Autowired
     private ResumePaymentService resumePaymentService;
+
+    @GetMapping
+    public ResponseEntity<SubscriptionResponseDTO> getSubscription(@AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        SubscriptionResponseDTO response = userSubscriptionService.getSubscription(userDetails.getId());
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/verify")
     public ResponseEntity<?> verifyPurchase(
